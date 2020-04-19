@@ -4,6 +4,8 @@ spec-md-confluence
 
 spec-md-confluence is a plugin for [spec-md](https://github.com/leebyron/spec-md) which allows spec-md to produce output in the confluence xml storage format.
 
+Portions of this code base were written by [leebyron](https://github.com/leebyron).
+
 
 # Usage
 
