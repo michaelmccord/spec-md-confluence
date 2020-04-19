@@ -1,0 +1,9 @@
+<ac:structured-macro ac:name="panel">
+  <ac:parameter ac:name="bgColor">#6bc778</ac:parameter>
+  {{!-- <ac:parameter ac:name="titleBGColor">#00a400</ac:parameter> --}}
+  {{!-- <ac:parameter ac:name="title">My title</ac:parameter> --}}
+  <ac:parameter ac:name="borderStyle">solid</ac:parameter>
+  <ac:parameter ac:name="borderColor">#6bc778</ac:parameter>
+  {{!-- <ac:parameter ac:name="titleColor">white</ac:parameter> --}}
+  <ac:rich-text-body>{{~>contents contents~}}</ac:rich-text-body>
+</ac:structured-macro>

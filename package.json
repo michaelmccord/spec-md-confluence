@@ -1,0 +1,84 @@
+{
+  "name": "spec-md-confluence",
+  "version": "1.0.0",
+  "main": "./src/index.js",
+  "author": "Michael McCord",
+  "license": "MIT",
+  "private": false,
+  "devDependencies": {
+    "@semantic-release/changelog": "^5.0.1",
+    "jest-diff": "^25.3.0",
+    "semantic-release": "^17.0.6"
+  },
+  "engines": {
+    "node": ">=12.13.0"
+  },
+  "scripts": {
+    "test": "node ./test/runner.js",
+    "watch": "nodemon -e css,js,json,pegjs,md --ignore src/grammar.js --exec 'yarn test'",
+    "release": "semantic-release"
+  },
+  "files": [
+    "src",
+    "LICENSE",
+    "templates",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "keywords": [
+    "ast",
+    "ecma",
+    "ecmascript",
+    "html",
+    "markdown",
+    "markup",
+    "spec",
+    "specs",
+    "specification",
+    "typography",
+    "code",
+    "confluence"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/michaelmccord/spec-md-confluence"
+  },
+  "bugs": {
+    "url": "https://github.com/michaelmccord/spec-md-confluence/issues"
+  },
+  "peerDependencies": {},
+  "dependencies": {
+    "handlebars": "^4.7.6",
+    "handlebars-helpers": "^0.10.0",
+    "spec-md": "https://github.com/michaelmccord/spec-md"
+  },
+  "release": {
+    "plugins": [
+      [
+        "@semantic-release/changelog",
+        {
+          "changelogTitle": "spec-md-confluence Changelog"
+        }
+      ],
+      [
+        "@semantic-release/npm",
+        {
+          "npmPublish": false,
+          "tarballDir": "./pkg.tar"
+        }
+      ],
+      [
+        "@semantic-release/github",
+        {
+          "asssets": [
+            {
+              "path": "pkg.tar",
+              "name": "npm package",
+              "label": "npm package"
+            }
+          ]
+        }
+      ]
+    ]
+  }
+}

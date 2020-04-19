@@ -1,0 +1,14 @@
+<span style="font-style: normal;"><strong>one of</strong></span>
+<div style="margin: 1ex 1ex 1ex 1ex;">
+    <table class="wrapped confluenceTable" style="border-collapse: collapse; border: none; margin-left: 2em;" >
+      <tbody style="border-collapse: collapse; border: none;">
+        {{#each rows}}
+        <tr>
+          {{#each .}}
+          <td style="border: none; margin: 0 0 0 1ex; padding: 0 0.5em; vertical-align: baseline;">{{~>(lookup . 'type')~}}</td>
+          {{/each}}
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+</div>

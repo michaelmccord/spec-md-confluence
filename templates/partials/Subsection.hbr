@@ -1,0 +1,1 @@
+<div style="margin-top: 2em; color:rgb(20,20,20)"><h6>{{{escape title}}}</h6>{{>contents contents}}</div>

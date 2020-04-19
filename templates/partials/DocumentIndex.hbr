@@ -1,0 +1,17 @@
+<div>
+  <h1>§Index</h1>
+  <ol>
+    {{#processTerms . @root.options}}
+    {{#if externalLink }}
+    <li><a href="{{href}}" target="_blank">{{{escape name}}}</a></li>
+    {{else}}
+    <li>
+      <ac:link ac:anchor="{{{removeAnchorization href}}}">
+        <ac:link-body>{{{escape name}}}</ac:link-body>
+      </ac:link>
+    </li>
+    {{/if}}
+    {{/processTerms}}
+  </ol>
+</div>
+

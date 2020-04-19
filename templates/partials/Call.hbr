@@ -1,0 +1,11 @@
+<span>
+  {{#if (lookup @root.options.biblio (anchorize name)) }}
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">{{{anchorize name}}}</ac:parameter>
+  </ac:structured-macro><ac:link ac:anchor="{{{anchorize name}}}">
+    <ac:link-body>{{{escape name}}}</ac:link-body>
+  </ac:link>
+{{~else~}}
+{{{escape name}}}
+{{~/if~}}({{#each args}}{{>(lookup . 'type')}}{{#if (not @last)}}, {{/if}}{{/each}})
+</span>

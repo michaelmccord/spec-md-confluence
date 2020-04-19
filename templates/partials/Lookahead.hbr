@@ -1,0 +1,13 @@
+<span>
+<span style="color: rgb(102, 102, 102); font-family: Cambria, 'Palatino Linotype', Palatino, 'Liberation Serif', serif; font-style: normal; font-weight: normal;">[&nbsp;lookahead&nbsp;
+  {{~#if (and (lookup . 'not') (or nt (gt (length set) 1)))~}}&#x2209;
+  {{~else if (or (gt (length set) 1) nt)~}}&#x2208;
+  {{~else if (lookup . 'not')~}}&#x2260;
+  {{~else~}}=
+  {{~/if~}}&nbsp;</span>
+{{~#if (gt (length set) 1)~}} { {{~/if~}}
+{{~#each set~}}
+{{~#if (not @first)~}}<span style="color: rgb(102, 102, 102); font-family: Cambria, 'Palatino Linotype', Palatino, 'Liberation Serif', serif; font-style: normal; font-weight: normal;">,&nbsp;</span>{{~/if~}}
+{{>(lookup . 'type') .}}
+{{~/each~}}{{~#if (gt (length set) 1)~}} } {{~/if~}}&nbsp;]
+</span>

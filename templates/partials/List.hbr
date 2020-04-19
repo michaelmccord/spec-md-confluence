@@ -1,0 +1,5 @@
+{{~#if ordered~}}
+<ol>{{>contents items}}</ol>
+{{~else~}}
+<ul>{{>contents items}}</ul>
+{{/if}}

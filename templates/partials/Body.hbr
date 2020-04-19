@@ -1,0 +1,1 @@
+{{~#filter contents 'Section' prop='type'~}}{{~> (lookup . 'type')~}}{{~/filter~}}

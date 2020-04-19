@@ -1,0 +1,12 @@
+<table>
+  <thead><tr>{{#each headers}}<th>{{>contents . }}</th>{{/each}}</tr></thead>
+  <tbody>
+    {{~#each rows~}}
+    <tr>
+      {{~#each .~}}
+        <td>{{~>contents .~}}</td>
+      {{~/each~}}
+    </tr>
+    {{~/each~}}
+  </tbody>
+</table>

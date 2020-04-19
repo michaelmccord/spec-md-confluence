@@ -1,0 +1,1 @@
+<img src="{{{encodeURI url}}}" {{#if alt}}alt="{{escape alt}}"{{/if}} />

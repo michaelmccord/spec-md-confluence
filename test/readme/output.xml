@@ -1,0 +1,1848 @@
+<div>
+  <div id="intro">
+    <p>Renders Markdown with some additions into an HTML format commonly used for writing technical specification documents. Markdown additions include code syntax highlighting, edit annotations, and the definition of algorithms and grammar productions.</p>
+    <div style="margin-top: 2em; color:rgb(20,20,20)"><h6>Philosophy</h6><p>Spec Markdown is first and foremost Markdown. As such, it follows Markdown&rsquo;s philosophy of intending to be as easy to read and easy to write as is feasible.</p>
+    <p>In order to interoperate with other tools which use Markdown, Spec Markdown tries to add as little additional syntax as possible, instead preferring conventions. This means any documents written with Spec Markdown in mind should render adequately by other Markdown renderers.</p>
+    <p>To support the rendering additions of Spec Markdown, some features of Markdown may be limited or removed. As an example, Spec Markdown is strict about the order and locations of headers in a document.</p>
+    <ac:structured-macro ac:name="note">
+    <ac:rich-text-body>This is not a normative spec for Spec Markdown, but just documentation of this tool. Of course, written in Spec Markdown!</ac:rich-text-body>
+    </ac:structured-macro>
+    </div>
+  </div>
+  <h1>Contents</h1>
+  <ac:structured-macro ac:name="toc">
+    <ac:parameter ac:name="printable">true</ac:parameter>
+    <ac:parameter ac:name="indent">10px</ac:parameter>
+    <ac:parameter ac:name="type">list</ac:parameter>
+    <ac:parameter ac:name="outline">false</ac:parameter>
+    <ac:parameter ac:name="style">none</ac:parameter>
+    <ac:parameter ac:name="absoluteUrl">true</ac:parameter>
+    <ac:parameter ac:name="maxLevel">6</ac:parameter>
+    <ac:parameter ac:name="exclude">Contents|Philosophy</ac:parameter>
+  </ac:structured-macro>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Getting-Started</ac:parameter>
+  </ac:structured-macro><h2><ac:link ac:anchor="sec-Getting-Started"><ac:link-body>1</ac:link-body></ac:link>&nbsp;Getting Started</h2><p>To use Spec Markdown, just write Markdown files. There are some conventions used by Spec Markdown which you can read about in <ac:link ac:anchor="sec-Spec-Additions"><ac:link-body>Spec additions</ac:link-body></ac:link>.</p>
+  <p>To convert your Markdown files into an HTML spec document, use the <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">spec-md</code> utility.</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">sh</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  npm install -g spec-md
+  spec-md ./path/to/markdown.md > ./path/to/output.html
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>You can also require <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">spec-md</code> as a node module.</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">sh</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  npm install --save-dev spec-md
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">JavaScript</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  var fs = require('fs');
+  var specMarkdown = require('spec-md');
+  specMarkdown.html('./path/to/markdown.md').then(function (html) {
+    fs.writeFile('./path/to/output.html', html);
+  });
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Spec Markdown also provides utilities for generating and operating on an intermediate representation of the markdown, which you can explore in <ac:link ac:anchor="sec-Using-Spec-Markdown"><ac:link-body>Using Spec Markdown</ac:link-body></ac:link>.</p>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Markdown</ac:parameter>
+  </ac:structured-macro><h2><ac:link ac:anchor="sec-Markdown"><ac:link-body>2</ac:link-body></ac:link>&nbsp;Markdown</h2><p>Spec Markdown is first and foremost <a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a>. More specifically, it&rsquo;s based on <a href="https://help.github.com/articles/github-flavored-markdown/">Github&#8208;flavored Markdown</a>.</p>
+  <p>This section explains the syntax and capabilities of Markdown that Spec Markdown supports and augments.</p>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Character-Encoding</ac:parameter>
+  </ac:structured-macro><h3><ac:link ac:anchor="sec-Character-Encoding"><ac:link-body>2.1</ac:link-body></ac:link>&nbsp;Character Encoding</h3><p>Markdown allows you to write text which uses &amp;, &lt;, and &gt;. The output HTML will automatically use the <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">&amp;amp;</code>, <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">&amp;lt;</code>, and <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">&amp;gt;</code> entities.</p>
+  <p>Well formed HTML entities can be written inline directly. If you write <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">&amp;copy;</code>, it will appear in the HTML output as &copy;.</p>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Escape-sequence</ac:parameter>
+  </ac:structured-macro><h4><ac:link ac:anchor="sec-Escape-sequence"><ac:link-body>2.1.1</ac:link-body></ac:link>&nbsp;Escape sequence</h4><p>Markdown makes use of certain characters to format text, in order to render one explicitly, place a backslash before it.</p>
+  <p>You can type *literal asterisks* instead of emphasis by typing <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">\*literal asterisks\*</code>.</p>
+  <p>Escaping does not apply within code.</p>
+  <p>Spec Markdown provides backslash escapes for the following characters:</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  \   backslash
+  `   backtick
+  *   asterisk
+  _   underscore
+  {}  curly braces
+  []  square brackets
+  ()  parentheses
+  #   hash mark
+  +   plus sign
+  -   minus sign (hyphen)
+  .   dot
+  !   exclamation mark
+  <   less-than    <-- added in Spec Markdown
+  >   greater-than <-- added in Spec Markdown
+  |   pipe         <-- added in Spec Markdown
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Inline-formatting</ac:parameter>
+  </ac:structured-macro><h3><ac:link ac:anchor="sec-Inline-formatting"><ac:link-body>2.2</ac:link-body></ac:link>&nbsp;Inline formatting</h3><p>Markdown allows for inline stylistic and structual formatting. Inline formatting is allowed in paragraphs, list items, and table cells.</p>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Inline-HTML</ac:parameter>
+  </ac:structured-macro><h4><ac:link ac:anchor="sec-Inline-HTML"><ac:link-body>2.2.1</ac:link-body></ac:link>&nbsp;Inline HTML</h4><p>Markdown is not a replacement for HTML and instead leverages HTML by allowing its use inline within paragraphs, links, etc.</p>
+  <p>This code has <blink>blinking</blink> and <em>emphasized</em> formatting.</p>
+  <p>Markdown syntax can continue to be <u>used <em>within</em> inline HTML</u>.</p>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Links</ac:parameter>
+  </ac:structured-macro><h4><ac:link ac:anchor="sec-Links"><ac:link-body>2.2.2</ac:link-body></ac:link>&nbsp;Links</h4><p>Use <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">[ ]</code> square brackets to indicate linked text followed immediately by <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">( )</code> parenthesis to describe the URL the text will link to.</p>
+  <p>The linked text can contain any other inline formatting.</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  This is an [-->*example*<--](https://www.facebook.com) of a link.
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces the following:</p>
+  <p>This is an <a href="https://www.facebook.com">&rarr;<em>example</em>&larr;</a> of a link.</p>
+  <ac:structured-macro ac:name="note">
+  <ac:rich-text-body>Links do not yet support a reference style short&#8208;form.</ac:rich-text-body>
+  </ac:structured-macro>
+  <ac:structured-macro ac:name="note">
+  <ac:rich-text-body>Links do not yet support a title attribute.</ac:rich-text-body>
+  </ac:structured-macro>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Emphasis</ac:parameter>
+  </ac:structured-macro><h4><ac:link ac:anchor="sec-Emphasis"><ac:link-body>2.2.3</ac:link-body></ac:link>&nbsp;Emphasis</h4><p>Wrapping asterisks <em>(*)</em> indicate emphasis. Like Github&#8208;flavored Markdown, Spec Markdown does not treat underscore <em>(_)</em> as emphasis.</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  Example of **bold** and *italic* and ***bold italic***.
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces the following:</p>
+  <p>Example of <strong>bold</strong> and <em>italic</em> and <strong><em>bold italic</em></strong>.</p>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Inline-Code</ac:parameter>
+  </ac:structured-macro><h4><ac:link ac:anchor="sec-Inline-Code"><ac:link-body>2.2.4</ac:link-body></ac:link>&nbsp;Inline Code</h4><p>Wrapping back&#8208;ticks <em>(`)</em> indicate inline code, text inside back&#8208;ticks is not formatted, allowing for special characters to be used in inline code without escapes.</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  This is an `example` of some inline code.
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces</p>
+  <p>This is an <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">example</code> of some inline code.</p>
+  <ac:structured-macro ac:name="note">
+  <ac:rich-text-body>Markdown&rsquo;s double&#8208;back&#8208;tick syntax is not yet supported.</ac:rich-text-body>
+  </ac:structured-macro>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Images</ac:parameter>
+  </ac:structured-macro><h4><ac:link ac:anchor="sec-Images"><ac:link-body>2.2.5</ac:link-body></ac:link>&nbsp;Images</h4><ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  ![Specs](http://i.imgur.com/aV8o3rE.png)
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces the following:</p>
+  <p><img src="http://i.imgur.com/aV8o3rE.png" alt="Specs" /></p>
+  <p>Also, consider using images for support of more complex features like graph diagrams. For example, with Graviso:</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  ![How spec-md works](http://g.gravizo.com/svg?
+    digraph specmd {
+      markdown [shape=box];
+      ast [shape=box];
+      html [shape=box];
+      markdown -> parse [weight=8];
+      parse -> ast;
+      ast -> print;
+      edge [color=red];
+      print -> html;
+    }
+  )
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces the following:</p>
+  <p><img src="http://g.gravizo.com/svg?%0A%20%20digraph%20specmd%20%7B%0A%20%20%20%20markdown%20%5Bshape=box%5D;%0A%20%20%20%20ast%20%5Bshape=box%5D;%0A%20%20%20%20html%20%5Bshape=box%5D;%0A%20%20%20%20markdown%20-%3E%20parse%20%5Bweight=8%5D;%0A%20%20%20%20parse%20-%3E%20ast;%0A%20%20%20%20ast%20-%3E%20print;%0A%20%20%20%20edge%20%5Bcolor=red%5D;%0A%20%20%20%20print%20-%3E%20html;%0A%20%20%7D%0A" alt="How spec-md works" /></p>
+  <ac:structured-macro ac:name="note">
+  <ac:rich-text-body>the title attribute is not yet supported</ac:rich-text-body>
+  </ac:structured-macro>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Blocks</ac:parameter>
+  </ac:structured-macro><h3><ac:link ac:anchor="sec-Blocks"><ac:link-body>2.3</ac:link-body></ac:link>&nbsp;Blocks</h3><p>Markdown allows for block&#8208;level structual formatting. Every block is seperated by at least two new lines. Spec Markdown makes use of Markdown&rsquo;s blocks to produce more specific structural formatting.</p>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Block-HTML</ac:parameter>
+  </ac:structured-macro><h4><ac:link ac:anchor="sec-Block-HTML"><ac:link-body>2.3.1</ac:link-body></ac:link>&nbsp;Block HTML</h4><p>Markdown is not a replacement for HTML and instead leverages HTML by allowing its use as complete blocks when separated from surrounding content by blank lines.</p>
+  <ac:structured-macro ac:name="note">
+  <ac:rich-text-body>Markdown formatting syntax is not processed within block&#8208;level HTML tags.</ac:rich-text-body>
+  </ac:structured-macro>
+  <p>For example, to add an HTML table to a Markdown article:</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  Unrelated previous paragraph followed by a blank line
+  
+  <table>
+  <tr>
+  <td>Table cell</td>
+  <td>
+  
+  <table>
+  <tr>
+  <td>*Tables in tables*</td>
+  </tr>
+  </table>
+  
+  </td>
+  </tr>
+  </table>
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces the following:</p>
+  <p>Unrelated previous paragraph followed by a blank line</p>
+  <table>
+  <tr>
+  <td>Table cell</td>
+  <td>
+  
+  <table>
+  <tr>
+    <td>*Tables in tables*</td>
+  </tr>
+  </table>
+  
+  </td>
+  </tr>
+  </table><p>And using <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">&lt;pre&gt;</code> produces a simple code block:</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  <pre>
+  Buffalo Bill ’s
+  defunct
+         who used to
+         ride a watersmooth-silver
+                                  stallion
+  and break onetwothreefourfive pigeonsjustlikethat
+                                                   Jesus
+  he was a handsome man
+                       and what i want to know is
+  how do you like your blueeyed boy
+  Mister Death
+  </pre>
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces the following:</p>
+  <pre>
+  Buffalo Bill ’s
+  defunct
+         who used to
+         ride a watersmooth-silver
+                                  stallion
+  and break onetwothreefourfive pigeonsjustlikethat
+                                                   Jesus
+  he was a handsome man
+                       and what i want to know is
+  how do you like your blueeyed boy
+  Mister Death
+  </pre><ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Blocks.Section-Headers</ac:parameter>
+  </ac:structured-macro><h4><ac:link ac:anchor="sec-Blocks.Section-Headers"><ac:link-body>2.3.2</ac:link-body></ac:link>&nbsp;Section Headers</h4><p>Regular Markdown supports two styles of headers, Setext and atx, however Spec Markdown generally only supports atx style headers.</p>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">Example-1</ac:parameter>
+  </ac:structured-macro>
+  <ac:link ac:anchor="Example-1">
+    <ac:link-body>Example #1</ac:link-body>
+  </ac:link><ac:structured-macro ac:name="code"><ac:parameter ac:name="title">Example #1</ac:parameter><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  # Header
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Setext headers are not supported by Spec Markdown.</p>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">Counter-Example-2</ac:parameter>
+  </ac:structured-macro>
+  <ac:link ac:anchor="Counter-Example-2">
+    <ac:link-body>Counter Example #2</ac:link-body>
+  </ac:link><ac:structured-macro ac:name="code"><ac:parameter ac:name="title">Counter Example #2</ac:parameter><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  Header
+  ------
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>The number of <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">#</code> characters refers to the depth of the section. To produce an, <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">&lt;h3&gt;</code>, type <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">###</code>. Optionally, a header may be &ldquo;closed&rdquo; by any number of <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">#</code> characters.</p>
+  <ac:structured-macro ac:name="note">
+  <ac:rich-text-body>Spec Markdown requires that documents start with <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">#</code> and that each section contained within is only one level deeper. An &lt;h1&gt; section may only contain &lt;h2&gt; sections.</ac:rich-text-body>
+  </ac:structured-macro>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Paragraphs</ac:parameter>
+  </ac:structured-macro><h4><ac:link ac:anchor="sec-Paragraphs"><ac:link-body>2.3.3</ac:link-body></ac:link>&nbsp;Paragraphs</h4><p>Paragraphs are the most simple Markdown blocks. Lines are appended together to form a single &lt;p&gt; tag. Any inline syntax is allowed within a paragraph.</p>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Lists</ac:parameter>
+  </ac:structured-macro><h4><ac:link ac:anchor="sec-Lists"><ac:link-body>2.3.4</ac:link-body></ac:link>&nbsp;Lists</h4><p>Markdown lists are lines which each start with either a ordered bullet <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">1.</code> or unordered bullet, <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">*</code>, <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">-</code>, or <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">+</code>. Lists are optionally indented by two spaces.</p>
+  <p>Lists can be nested within other lists by indenting by at least two spaces.</p>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">Example-3</ac:parameter>
+  </ac:structured-macro>
+  <ac:link ac:anchor="Example-3">
+    <ac:link-body>Example #3</ac:link-body>
+  </ac:link><ac:structured-macro ac:name="code"><ac:parameter ac:name="title">Example #3</ac:parameter><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[    1. this
+    2. is
+    3. a
+      - nested
+    4. list
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces the following:</p>
+  <ol><li>this</li><li>is</li><li>a<ul><li>nested</li></ul>
+  </li><li>list</li></ol><ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Code-Block</ac:parameter>
+  </ac:structured-macro><h4><ac:link ac:anchor="sec-Code-Block"><ac:link-body>2.3.5</ac:link-body></ac:link>&nbsp;Code Block</h4><p>A block of code is formed by either indenting by 4 spaces, or wrapping with <code>```</code> on their own lines.</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  ```
+  var code = sample();
+  ```  ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces the following:</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  var code = sample();
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Block-Quotes</ac:parameter>
+  </ac:structured-macro><h4><ac:link ac:anchor="sec-Block-Quotes"><ac:link-body>2.3.6</ac:link-body></ac:link>&nbsp;Block Quotes</h4><p>Spec markdown does not yet support Markdown&rsquo;s <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">&gt;</code> style block quotes.</p>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Horizontal-Rules</ac:parameter>
+  </ac:structured-macro><h4><ac:link ac:anchor="sec-Horizontal-Rules"><ac:link-body>2.3.7</ac:link-body></ac:link>&nbsp;Horizontal Rules</h4><p>Spec Markdown does not yet support Markdown&rsquo;s <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">---</code> style &lt;hr&gt;.</p>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Automatic-Links</ac:parameter>
+  </ac:structured-macro><h4><ac:link ac:anchor="sec-Automatic-Links"><ac:link-body>2.3.8</ac:link-body></ac:link>&nbsp;Automatic Links</h4><p>Spec Markdown does not yet automatically link urls. </p>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Spec-Additions</ac:parameter>
+  </ac:structured-macro><h2><ac:link ac:anchor="sec-Spec-Additions"><ac:link-body>3</ac:link-body></ac:link>&nbsp;Spec Additions</h2><p>Spec Markdown makes some additions to Markdown to support cases relevant to writing technical specs and documentation. It attempts to be as minimally invasive as possible, leveraging existing Markdown formatting features whenever possible so Spec Markdown documents may render adequately as regular Markdown.</p>
+  <p>Spec Markdown also makes restrictions to the overall format of the Markdown document in order to derive a structure to the entire document.</p>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Link-Anything</ac:parameter>
+  </ac:structured-macro><h3><ac:link ac:anchor="sec-Link-Anything"><ac:link-body>3.1</ac:link-body></ac:link>&nbsp;Link Anything</h3><p>Everything unique in a Spec Markdown file has a link created for it. Sections each have a link, as do named <ac:link ac:anchor="sec-Algorithms"><ac:link-body>Algorithms</ac:link-body></ac:link> and <ac:link ac:anchor="sec-Grammar"><ac:link-body>Grammar</ac:link-body></ac:link>. You&rsquo;ll find that <ac:link ac:anchor="sec-Note"><ac:link-body>Notes</ac:link-body></ac:link> and <ac:link ac:anchor="sec-Examples"><ac:link-body>Examples</ac:link-body></ac:link> are also given stable links based on their contents, just in case things move around.</p>
+  <p>However, you can also link <em>anything</em> in a Spec Markdown file. Just highlight any bit of text and a link will be created just for that selection, making referencing specific parts of your document easy. Try it here!</p>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Title-and-Introduction</ac:parameter>
+  </ac:structured-macro><h3><ac:link ac:anchor="sec-Title-and-Introduction"><ac:link-body>3.2</ac:link-body></ac:link>&nbsp;Title and Introduction</h3><p>A Spec Markdown document should start with one Setext style header which will be used as the title of the document. Any content before the first atx (<code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">#</code>) style header will become the introduction to the document.</p>
+  <p>A Spec Markdown document starts in this form:</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  Spec Markdown
+  -------------
+  
+  Introductory paragraph.
+  
+  # First Section Header
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Sections</ac:parameter>
+  </ac:structured-macro><h3><ac:link ac:anchor="sec-Sections"><ac:link-body>3.3</ac:link-body></ac:link>&nbsp;Sections</h3><p>A Spec Markdown document is separated into a sequence and hierarchy of sections. Those sections can then be used as navigation points and can be used to create a table of contents. A section is started by a header and ends at either the next header of similar or greater precedence or the end of the document. A section can contain other sections if their headers are of lower precedence.</p>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Sections.Section-Headers</ac:parameter>
+  </ac:structured-macro><h4><ac:link ac:anchor="sec-Sections.Section-Headers"><ac:link-body>3.3.1</ac:link-body></ac:link>&nbsp;Section Headers</h4><p>Regular Markdown supports two styles of headers, Setext and atx, however Spec Markdown only supports atx style headers as section headers.</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  # Header
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Only use Setext style headers for the title of the document.</p>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">Counter-Example-4</ac:parameter>
+  </ac:structured-macro>
+  <ac:link ac:anchor="Counter-Example-4">
+    <ac:link-body>Counter Example #4</ac:link-body>
+  </ac:link><ac:structured-macro ac:name="code"><ac:parameter ac:name="title">Counter Example #4</ac:parameter><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  Header
+  ------
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Spec Markdown also requires that only single <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">#</code> headers appear at the top of a document, and that only a <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">##</code> header (and not a <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">###</code> header) can be contained with the section started by a <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">#</code> header.</p>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Subsection-Headers</ac:parameter>
+  </ac:structured-macro><h4><ac:link ac:anchor="sec-Subsection-Headers"><ac:link-body>3.3.2</ac:link-body></ac:link>&nbsp;Subsection Headers</h4><p>While sections are numbered and appear in the table of contents, a subsection is similar but not numbered or in the table of contents.</p>
+  <div style="margin-top: 2em; color:rgb(20,20,20)"><h6>This is a subsection</h6><p>The subsection&rsquo;s content appears below the subsection header.</p>
+  </div>
+  <div style="margin-top: 2em; color:rgb(20,20,20)"><h6>Another subsection</h6><p>Sections may contain multiple subsections, but subsections cannot contain sections or subsections.</p>
+  </div>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Table-of-Contents</ac:parameter>
+  </ac:structured-macro><h4><ac:link ac:anchor="sec-Table-of-Contents"><ac:link-body>3.3.3</ac:link-body></ac:link>&nbsp;Table of Contents</h4><p>A table of contents is automatically generated from the hierarchy of sections in the Spec Markdown document.</p>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Section-Numbers</ac:parameter>
+  </ac:structured-macro><h4><ac:link ac:anchor="sec-Section-Numbers"><ac:link-body>3.3.4</ac:link-body></ac:link>&nbsp;Section Numbers</h4><p>A number is associated with each section, starting with 1. In a hierarchy of sections, the parent sections are joined with dots. This provides an unambiguous location identifier for a given section in a document.</p>
+  <p>You can specify these section numbers directly in your Markdown documents if you wish by writing them directly after the <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">#</code> and before the text of the header.</p>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Custom-Numbers</ac:parameter>
+  </ac:structured-macro><h5><ac:link ac:anchor="sec-Custom-Numbers"><ac:link-body>3.3.4.8</ac:link-body></ac:link>&nbsp;Custom Numbers</h5><p>If the section number is written in the document, the last number will be used as the number for that section. This is useful when writing a proposal against an existing spec and wish to reference a particular section.</p>
+  <p>The header for this section was written as</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  #### 3.2.3.8. Custom Numbers
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Appendix-Annex-Sections</ac:parameter>
+  </ac:structured-macro><h5><ac:link ac:anchor="sec-Appendix-Annex-Sections"><ac:link-body>3.3.4.9</ac:link-body></ac:link>&nbsp;Appendix / Annex Sections</h5><p>If a top level section is written with a letter, such as <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">A</code> instead of a number, that will begin an Appendix section.</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  # A. Appendix: Grammar
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Smart-Characters</ac:parameter>
+  </ac:structured-macro><h3><ac:link ac:anchor="sec-Smart-Characters"><ac:link-body>3.4</ac:link-body></ac:link>&nbsp;Smart Characters</h3><p>The Spec Markdown renderer will replace easy to type characters like quotes and dashes with their appropriate typographic entities. These replacements will not occur within blocks of code.</p>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Quotes-and-Dashes</ac:parameter>
+  </ac:structured-macro><h4><ac:link ac:anchor="sec-Quotes-and-Dashes"><ac:link-body>3.4.1</ac:link-body></ac:link>&nbsp;Quotes and Dashes</h4><p>Prose text has &ldquo;smart quotes&rdquo;, hyphens, en&#8208;dashes and em&#8208;dashes&mdash;you shouldn&rsquo;t have to think about it, they&rsquo;ll just work.</p>
+  <p>For example, a quote of a quote (with an inner apostrophe and emphasis for flair):</p>
+  <p><code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">&quot;She told me that &#x27;he isn&#x27;t here right *now*&#x27; - so I left.&quot;</code></p>
+  <p>Will render as:</p>
+  <p>&ldquo;She told me that&lsquo;he isn&rsquo;t here right <em>now</em>&rsquo; &ndash; so I left.&rdquo;</p>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Math</ac:parameter>
+  </ac:structured-macro><h4><ac:link ac:anchor="sec-Math"><ac:link-body>3.4.2</ac:link-body></ac:link>&nbsp;Math</h4><p>Math operators like &ge;, &le;, and &cong; can be written as <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">&gt;=</code>, <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">&lt;=</code>, and <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">~=</code>.</p>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Arrows</ac:parameter>
+  </ac:structured-macro><h4><ac:link ac:anchor="sec-Arrows"><ac:link-body>3.4.3</ac:link-body></ac:link>&nbsp;Arrows</h4><p>Smart arrows &rarr; and &larr; and &harr; can be written as <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">-&gt;</code>, <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">&lt;-</code> and <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">&lt;-&gt;</code>.</p>
+  <p>Fat smart arrows &rArr; and &lArr; and &hArr; can be written as <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">=&gt;</code>, <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">&lt;==</code> and <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">&lt;=&gt;</code>.</p>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Additional-escape-sequence</ac:parameter>
+  </ac:structured-macro><h4><ac:link ac:anchor="sec-Additional-escape-sequence"><ac:link-body>3.4.4</ac:link-body></ac:link>&nbsp;Additional escape sequence</h4><p>Spec Markdown allows escaping &lt; &gt; and | character with <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">\&gt;</code>, <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">\&lt;</code>, and <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">\|</code>.</p>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Tables</ac:parameter>
+  </ac:structured-macro><h4><ac:link ac:anchor="sec-Tables"><ac:link-body>3.4.5</ac:link-body></ac:link>&nbsp;Tables</h4><p>Similar to Github flavored Markdown</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  | This | is a | table |
+  | ---- | ---- | ----- |
+  | key  | val  | etc   |
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces the following:</p>
+  <table>
+    <thead><tr><th>This </th><th>is a </th><th>table </th></tr></thead>
+    <tbody><tr><td>key </td><td>val </td><td>etc </td></tr></tbody>
+  </table><p>Table cells can contain any content that a paragraph can contain.</p>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Note</ac:parameter>
+  </ac:structured-macro><h3><ac:link ac:anchor="sec-Note"><ac:link-body>3.5</ac:link-body></ac:link>&nbsp;Note</h3><p>Notes can be written inline with a spec document, and are often helpful to supply non&#8208;normative explanatory text or caveats in a differently formatted style. Case insensitive, the <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">:</code> is optional.</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  Note: Notes are awesome.
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces the following:</p>
+  <ac:structured-macro ac:name="note">
+  <ac:rich-text-body>Notes are awesome.</ac:rich-text-body>
+  </ac:structured-macro>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Todo</ac:parameter>
+  </ac:structured-macro><h3><ac:link ac:anchor="sec-Todo"><ac:link-body>3.6</ac:link-body></ac:link>&nbsp;Todo</h3><p>It&rsquo;s often helpful to write a draft of a document and leave &ldquo;to&#8208;do&rdquo; comments in not&#8208;yet&#8208;completed sections. Case insensitive, the <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">:</code> is optional.</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  TODO: finish this section
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces the following:</p>
+  <ac:structured-macro ac:name="note">
+  <ac:rich-text-body>finish this section</ac:rich-text-body>
+  </ac:structured-macro>
+  <ac:structured-macro ac:name="note">
+  <ac:rich-text-body>You can also write <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">TK</code> in place of <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">TODO</code>, nerds.</ac:rich-text-body>
+  </ac:structured-macro>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Syntax-Highlighting</ac:parameter>
+  </ac:structured-macro><h3><ac:link ac:anchor="sec-Syntax-Highlighting"><ac:link-body>3.7</ac:link-body></ac:link>&nbsp;Syntax Highlighting</h3><p>Spec Markdown will apply syntax highlighting to blocks of code if a github&#8208;flavored&#8208;markdown style language is supplied.</p>
+  <p>You may provide a <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">highlight</code> function as an option to customize this behavior.</p>
+  <p>To render this highlighted javascript:</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  ```js
+  var baz = foo("bar");
+  ```  ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces the following:</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">JavaScript</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  var baz = foo("bar");
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Examples</ac:parameter>
+  </ac:structured-macro><h4><ac:link ac:anchor="sec-Examples"><ac:link-body>3.7.1</ac:link-body></ac:link>&nbsp;Examples</h4><p>Spec Markdown helps you write examples, visually indicaticating the difference from normative code blocks, and generating permalinks to those examples. Just write <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">example</code> after the <code>```</code>.</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  ```example
+  var great = useOf.example("code");
+  ```  ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces the following:</p>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">Example-5</ac:parameter>
+  </ac:structured-macro>
+  <ac:link ac:anchor="Example-5">
+    <ac:link-body>Example #5</ac:link-body>
+  </ac:link><ac:structured-macro ac:name="code"><ac:parameter ac:name="title">Example #5</ac:parameter><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  var great = useOf.example("code");
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Examples can also be syntax highlighted, by placing the language directly before writing <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">example</code>:</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  ```js example
+  var great = useOf.example("code");
+  ```  ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces the following:</p>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">Example-6</ac:parameter>
+  </ac:structured-macro>
+  <ac:link ac:anchor="Example-6">
+    <ac:link-body>Example #6</ac:link-body>
+  </ac:link><ac:structured-macro ac:name="code"><ac:parameter ac:name="title">Example #6</ac:parameter><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">JavaScript</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  var great = useOf.example("code");
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Counter-Examples</ac:parameter>
+  </ac:structured-macro><h4><ac:link ac:anchor="sec-Counter-Examples"><ac:link-body>3.7.2</ac:link-body></ac:link>&nbsp;Counter Examples</h4><p>In addition to examples, Spec Markdown helps you write <em>counter&#8208;examples</em>, which are examples of things you should not do. These are visually indicated as different from normative code blocks and other examples. Just write <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">counter-example</code> after the <code>```</code> (and optional language).</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  ```js counter-example
+  var shit = dontSwear();
+  ```  ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces the following:</p>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">Counter-Example-7</ac:parameter>
+  </ac:structured-macro>
+  <ac:link ac:anchor="Counter-Example-7">
+    <ac:link-body>Counter Example #7</ac:link-body>
+  </ac:link><ac:structured-macro ac:name="code"><ac:parameter ac:name="title">Counter Example #7</ac:parameter><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">JavaScript</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  var shit = dontSwear();
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Imports</ac:parameter>
+  </ac:structured-macro><h3><ac:link ac:anchor="sec-Imports"><ac:link-body>3.8</ac:link-body></ac:link>&nbsp;Imports</h3><p>When compiled, an import reference will be inlined into the same document. An import reference looks like a link to a &ldquo;.md&rdquo; file as a single paragraph.</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  [AnythingGoesHere](SomeName.md)
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>You can optionally prefix the import reference with <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">#</code> characters to describe at what section level the import should apply. By default an import reference will be imported as a child of the current section.</p>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Inline-editing</ac:parameter>
+  </ac:structured-macro><h3><ac:link ac:anchor="sec-Inline-editing"><ac:link-body>3.9</ac:link-body></ac:link>&nbsp;Inline editing</h3><p>A portion of the <a href="http://criticmarkup.com/">CriticMarkup</a> spec is supported.</p>
+  <p>For example, we can <ins style="background-color: rgb(107, 199, 120);text-decoration: none;">add</ins> or <del style="background-color: rgb(201, 77, 77);">remove</del> text with the <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">{++add++}</code> or <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">{--remove--}</code> syntax.</p>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Block-editing</ac:parameter>
+  </ac:structured-macro><h3><ac:link ac:anchor="sec-Block-editing"><ac:link-body>3.10</ac:link-body></ac:link>&nbsp;Block editing</h3><p>We can also add and remove entire blocks of content, by using <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">{++</code> or <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">{--</code> on their own line with empty lines on either side:</p>
+  <ac:structured-macro ac:name="panel">
+    <ac:parameter ac:name="bgColor">#6bc778</ac:parameter>
+    <ac:parameter ac:name="borderStyle">solid</ac:parameter>
+    <ac:parameter ac:name="borderColor">#6bc778</ac:parameter>
+    <ac:rich-text-body><p>These paragraphs</p>
+  <p>have been <em>added</em>.</p>
+  </ac:rich-text-body>
+  </ac:structured-macro><p>And</p>
+  <ac:structured-macro ac:name="panel">
+    <ac:parameter ac:name="bgColor">#d15e5e</ac:parameter>
+    <ac:parameter ac:name="borderStyle">solid</ac:parameter>
+    <ac:parameter ac:name="borderColor">#933</ac:parameter>
+    <ac:rich-text-body><span style="text-decoration: line-through;"><p>These paragraphs</p>
+  <p>have been <em>removed</em>.</p>
+  </span></ac:rich-text-body>
+  </ac:structured-macro><p>By typing:</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  {++
+  
+  These paragraphs
+  
+  have been *added*.
+  
+  ++}
+  
+  And
+  
+  {--
+  
+  These paragraphs
+  
+  have been *removed*.
+  
+  --}
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><ac:structured-macro ac:name="note">
+  <ac:rich-text-body>imports and section headers cannot be included in a added or removed section to preserve the ability to render a table of contents.</ac:rich-text-body>
+  </ac:structured-macro>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Algorithms</ac:parameter>
+  </ac:structured-macro><h3><ac:link ac:anchor="sec-Algorithms"><ac:link-body>3.11</ac:link-body></ac:link>&nbsp;Algorithms</h3><p>Specifications for procedures or algorithms can be defined in terms of nested markdown lists. These lists can be of any kind, but will always have ordered formatting. The bullet labeling for algorithms is specific will cycle between decimal, lower&#8208;alpha, and lower&#8208;roman.</p>
+  <p>An algorithm definition also describes its arguments in terms of variables.</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  Algorithm(arg) :
+    1. first
+    1. then
+      * substep
+        * deeper substep
+        * another deep substep
+      * another step
+    1. okay
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces the following:</p>
+  <div style="margin: 1em 0 1em 2em;"><span>
+  Algorithm(<em>arg</em>)
+  </span><ol><li>first</li><li>then<ol><li>substep<ol><li>deeper substep</li><li>another deep substep</li></ol></li><li>another step</li></ol></li><li>okay</li></ol></div><ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Grammar</ac:parameter>
+  </ac:structured-macro><h3><ac:link ac:anchor="sec-Grammar"><ac:link-body>3.12</ac:link-body></ac:link>&nbsp;Grammar</h3><p>Spec Markdown makes it easier to describe context&#8208;free grammatical productions.</p>
+  <p>Grammars are defined by a sequence of <em>terminal</em> characters or sequence of characters, which are then referenced by <em>non&#8208;terminal</em> rules. The definition of a non&#8208;terminal is referred to as a <em>production</em>.</p>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Grammar-Production</ac:parameter>
+  </ac:structured-macro><h4><ac:link ac:anchor="sec-Grammar-Production"><ac:link-body>3.12.1</ac:link-body></ac:link>&nbsp;Grammar Production</h4><p>The <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">:</code> token indicates an &ldquo;is defined as&rdquo; production for a non&#8208;terminal, where a single definition can be written directly after the <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">:</code>.</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  PBJ : Bread PeanutButter Jelly Bread
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces the following:</p>
+  <div style="margin: 1em 0em 1em 2em;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">PBJ</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="PBJ">
+      <ac:link-body>PBJ</ac:link-body>
+    </ac:link></span><span style="font-style: normal;font-weight: bold;margin: 0 1ex;">:</span><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Bread</span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  PeanutButter</span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Jelly</span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Bread</span></span></div></div><p>Or if <span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">PBJ</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="PBJ">
+      <ac:link-body>PBJ</ac:link-body>
+    </ac:link></span> has definition options, they are written immediately after as a Markdown list.</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  PBJ :
+    - Bread PeanutButter Jelly Bread
+    - Bread Jelly PeanutButter Bread
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces the following:</p>
+  <div style="margin: 1em 0em 1em 2em;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">PBJ</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="PBJ">
+      <ac:link-body>PBJ</ac:link-body>
+    </ac:link></span><span style="font-style: normal;font-weight: bold;margin: 0 1ex;">:</span><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Bread</span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  PeanutButter</span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Jelly</span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Bread</span></span></div><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Bread</span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Jelly</span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  PeanutButter</span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Bread</span></span></div></div><p>Each definition is a space seperated list of <em>terminal</em> or <em>non&#8208;terminal</em> tokens, and may also include conditionals and constraints.</p>
+  <p>Definition lists aren&rsquo;t required to be indented:</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  PBJ :
+  
+  - Bread PeanutButter Jelly Bread
+  - Bread Jelly PeanutButter Bread
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces the following:</p>
+  <div style="margin: 1em 0em 1em 2em;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">PBJ</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="PBJ">
+      <ac:link-body>PBJ</ac:link-body>
+    </ac:link></span><span style="font-style: normal;font-weight: bold;margin: 0 1ex;">:</span><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Bread</span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  PeanutButter</span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Jelly</span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Bread</span></span></div><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Bread</span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Jelly</span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  PeanutButter</span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Bread</span></span></div></div><ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Production-types</ac:parameter>
+  </ac:structured-macro><h4><ac:link ac:anchor="sec-Production-types"><ac:link-body>3.12.2</ac:link-body></ac:link>&nbsp;Production types</h4><p>Often languages wish to specify different types of grammar productions, such as lexical or syntactical, or if certain characters line whitespace or newlines are permitted between symbols in the right&#8208;hand&#8208;side. Spec&#8208;md allows this this distinction based on the number of colons:</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  TypeOne : `type` `one`
+  
+  TypeTwo :: `type` `two`
+  
+  TypeThree ::: `type` `three`
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces the following:</p>
+  <div style="margin: 1em 0em 1em 2em;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">TypeOne</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="TypeOne">
+      <ac:link-body>TypeOne</ac:link-body>
+    </ac:link></span><span style="font-style: normal;font-weight: bold;margin: 0 1ex;">:</span><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>type</strong></span></span><span style="margin: 0 1ex 0 1ex;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>one</strong></span></span></div></div><div style="margin: 1em 0em 1em 2em;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">TypeTwo</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="TypeTwo">
+      <ac:link-body>TypeTwo</ac:link-body>
+    </ac:link></span><span style="font-style: normal;font-weight: bold;margin: 0 1ex;">::</span><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>type</strong></span></span><span style="margin: 0 1ex 0 1ex;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>two</strong></span></span></div></div><div style="margin: 1em 0em 1em 2em;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">TypeThree</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="TypeThree">
+      <ac:link-body>TypeThree</ac:link-body>
+    </ac:link></span><span style="font-style: normal;font-weight: bold;margin: 0 1ex;">:::</span><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>type</strong></span></span><span style="margin: 0 1ex 0 1ex;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>three</strong></span></span></div></div><ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-One-of</ac:parameter>
+  </ac:structured-macro><h4><ac:link ac:anchor="sec-One-of"><ac:link-body>3.12.3</ac:link-body></ac:link>&nbsp;One of</h4><p>If each definition option is a single token, it can be expressed as a &ldquo;one of&rdquo; expression instead of a markdown list.</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  AssignmentOperator : one of *= `/=` %= += -= <<= >>= >>>= &= ^= |=
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces the following:</p>
+  <div style="margin: 1em 0em 1em 2em;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">AssignmentOperator</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="AssignmentOperator">
+      <ac:link-body>AssignmentOperator</ac:link-body>
+    </ac:link></span><span style="font-style: normal;font-weight: bold;margin: 0 1ex;">:</span><span style="font-style: normal;"><strong>one of</strong></span>
+  <div style="margin: 1ex 1ex 1ex 1ex;">
+      <table class="wrapped confluenceTable" style="border-collapse: collapse; border: none; margin-left: 2em;" >
+        <tbody style="border-collapse: collapse; border: none;">
+          <tr>
+            <td style="border: none; margin: 0 0 0 1ex; padding: 0 0.5em; vertical-align: baseline;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>*=</strong></span></td>
+            <td style="border: none; margin: 0 0 0 1ex; padding: 0 0.5em; vertical-align: baseline;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>/=</strong></span></td>
+            <td style="border: none; margin: 0 0 0 1ex; padding: 0 0.5em; vertical-align: baseline;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>%=</strong></span></td>
+            <td style="border: none; margin: 0 0 0 1ex; padding: 0 0.5em; vertical-align: baseline;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>+=</strong></span></td>
+            <td style="border: none; margin: 0 0 0 1ex; padding: 0 0.5em; vertical-align: baseline;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>-=</strong></span></td>
+            <td style="border: none; margin: 0 0 0 1ex; padding: 0 0.5em; vertical-align: baseline;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>&lt;&lt;=</strong></span></td>
+            <td style="border: none; margin: 0 0 0 1ex; padding: 0 0.5em; vertical-align: baseline;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>&gt;&gt;=</strong></span></td>
+            <td style="border: none; margin: 0 0 0 1ex; padding: 0 0.5em; vertical-align: baseline;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>&gt;&gt;&gt;=</strong></span></td>
+            <td style="border: none; margin: 0 0 0 1ex; padding: 0 0.5em; vertical-align: baseline;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>&amp;=</strong></span></td>
+            <td style="border: none; margin: 0 0 0 1ex; padding: 0 0.5em; vertical-align: baseline;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>^=</strong></span></td>
+            <td style="border: none; margin: 0 0 0 1ex; padding: 0 0.5em; vertical-align: baseline;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>|=</strong></span></td>
+          </tr>
+        </tbody>
+      </table>
+  </div></div><p>&ldquo;one of&rdquo; can also be followed by a line break and multiple lines of tokens</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  Keyword : one of
+    break     do        in          typeof
+    case      else      instanceof  var
+    catch     export    new         void
+    class     extends   return      while
+    const     finally   super       with
+    continue  for       switch      yield
+    debugger  function  this
+    default   if        throw
+    delete    import    try
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces the following:</p>
+  <div style="margin: 1em 0em 1em 2em;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Keyword</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Keyword">
+      <ac:link-body>Keyword</ac:link-body>
+    </ac:link></span><span style="font-style: normal;font-weight: bold;margin: 0 1ex;">:</span><span style="font-style: normal;"><strong>one of</strong></span>
+  <div style="margin: 1ex 1ex 1ex 1ex;">
+      <table class="wrapped confluenceTable" style="border-collapse: collapse; border: none; margin-left: 2em;" >
+        <tbody style="border-collapse: collapse; border: none;">
+          <tr>
+            <td style="border: none; margin: 0 0 0 1ex; padding: 0 0.5em; vertical-align: baseline;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>break</strong></span></td>
+            <td style="border: none; margin: 0 0 0 1ex; padding: 0 0.5em; vertical-align: baseline;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>do</strong></span></td>
+            <td style="border: none; margin: 0 0 0 1ex; padding: 0 0.5em; vertical-align: baseline;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>in</strong></span></td>
+            <td style="border: none; margin: 0 0 0 1ex; padding: 0 0.5em; vertical-align: baseline;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>typeof</strong></span></td>
+          </tr>
+          <tr>
+            <td style="border: none; margin: 0 0 0 1ex; padding: 0 0.5em; vertical-align: baseline;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>case</strong></span></td>
+            <td style="border: none; margin: 0 0 0 1ex; padding: 0 0.5em; vertical-align: baseline;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>else</strong></span></td>
+            <td style="border: none; margin: 0 0 0 1ex; padding: 0 0.5em; vertical-align: baseline;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>instanceof</strong></span></td>
+            <td style="border: none; margin: 0 0 0 1ex; padding: 0 0.5em; vertical-align: baseline;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>var</strong></span></td>
+          </tr>
+          <tr>
+            <td style="border: none; margin: 0 0 0 1ex; padding: 0 0.5em; vertical-align: baseline;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>catch</strong></span></td>
+            <td style="border: none; margin: 0 0 0 1ex; padding: 0 0.5em; vertical-align: baseline;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>export</strong></span></td>
+            <td style="border: none; margin: 0 0 0 1ex; padding: 0 0.5em; vertical-align: baseline;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>new</strong></span></td>
+            <td style="border: none; margin: 0 0 0 1ex; padding: 0 0.5em; vertical-align: baseline;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>void</strong></span></td>
+          </tr>
+          <tr>
+            <td style="border: none; margin: 0 0 0 1ex; padding: 0 0.5em; vertical-align: baseline;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>class</strong></span></td>
+            <td style="border: none; margin: 0 0 0 1ex; padding: 0 0.5em; vertical-align: baseline;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>extends</strong></span></td>
+            <td style="border: none; margin: 0 0 0 1ex; padding: 0 0.5em; vertical-align: baseline;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>return</strong></span></td>
+            <td style="border: none; margin: 0 0 0 1ex; padding: 0 0.5em; vertical-align: baseline;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>while</strong></span></td>
+          </tr>
+          <tr>
+            <td style="border: none; margin: 0 0 0 1ex; padding: 0 0.5em; vertical-align: baseline;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>const</strong></span></td>
+            <td style="border: none; margin: 0 0 0 1ex; padding: 0 0.5em; vertical-align: baseline;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>finally</strong></span></td>
+            <td style="border: none; margin: 0 0 0 1ex; padding: 0 0.5em; vertical-align: baseline;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>super</strong></span></td>
+            <td style="border: none; margin: 0 0 0 1ex; padding: 0 0.5em; vertical-align: baseline;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>with</strong></span></td>
+          </tr>
+          <tr>
+            <td style="border: none; margin: 0 0 0 1ex; padding: 0 0.5em; vertical-align: baseline;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>continue</strong></span></td>
+            <td style="border: none; margin: 0 0 0 1ex; padding: 0 0.5em; vertical-align: baseline;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>for</strong></span></td>
+            <td style="border: none; margin: 0 0 0 1ex; padding: 0 0.5em; vertical-align: baseline;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>switch</strong></span></td>
+            <td style="border: none; margin: 0 0 0 1ex; padding: 0 0.5em; vertical-align: baseline;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>yield</strong></span></td>
+          </tr>
+          <tr>
+            <td style="border: none; margin: 0 0 0 1ex; padding: 0 0.5em; vertical-align: baseline;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>debugger</strong></span></td>
+            <td style="border: none; margin: 0 0 0 1ex; padding: 0 0.5em; vertical-align: baseline;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>function</strong></span></td>
+            <td style="border: none; margin: 0 0 0 1ex; padding: 0 0.5em; vertical-align: baseline;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>this</strong></span></td>
+          </tr>
+          <tr>
+            <td style="border: none; margin: 0 0 0 1ex; padding: 0 0.5em; vertical-align: baseline;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>default</strong></span></td>
+            <td style="border: none; margin: 0 0 0 1ex; padding: 0 0.5em; vertical-align: baseline;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>if</strong></span></td>
+            <td style="border: none; margin: 0 0 0 1ex; padding: 0 0.5em; vertical-align: baseline;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>throw</strong></span></td>
+          </tr>
+          <tr>
+            <td style="border: none; margin: 0 0 0 1ex; padding: 0 0.5em; vertical-align: baseline;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>delete</strong></span></td>
+            <td style="border: none; margin: 0 0 0 1ex; padding: 0 0.5em; vertical-align: baseline;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>import</strong></span></td>
+            <td style="border: none; margin: 0 0 0 1ex; padding: 0 0.5em; vertical-align: baseline;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>try</strong></span></td>
+          </tr>
+        </tbody>
+      </table>
+  </div></div><ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Non-Terminal-Token</ac:parameter>
+  </ac:structured-macro><h4><ac:link ac:anchor="sec-Non-Terminal-Token"><ac:link-body>3.12.4</ac:link-body></ac:link>&nbsp;Non Terminal Token</h4><p>Non&#8208;terminal tokens with a defined as a grammar production can be referred to in other grammar productions. Non&#8208;terminals must match the regular expression <span style="color: rgb(51, 51, 51);font-family: monospace;margin-left: 1ex;"><strong>/[A-Z][_a-zA-Z]*/</strong></span>. That is, they must start with an uppercase letter, followed by any number of letters or underscores.</p>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Prose</ac:parameter>
+  </ac:structured-macro><h4><ac:link ac:anchor="sec-Prose"><ac:link-body>3.12.5</ac:link-body></ac:link>&nbsp;Prose</h4><p>Grammars can describe arbitrary rules by using prose within a grammar definition by using <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">&quot;quotes&quot;</code>.</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  Sandwich : Bread "Any kind of topping" Bread
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces the following:</p>
+  <div style="margin: 1em 0em 1em 2em;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Sandwich</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Sandwich">
+      <ac:link-body>Sandwich</ac:link-body>
+    </ac:link></span><span style="font-style: normal;font-weight: bold;margin: 0 1ex;">:</span><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Bread</span></span><span style="margin: 0 1ex 0 1ex;"><span style="color: rgb(102, 102, 102); margin-left: 1ex;">Any kind of topping</span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Bread</span></span></div></div><ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Terminal-Token</ac:parameter>
+  </ac:structured-macro><h4><ac:link ac:anchor="sec-Terminal-Token"><ac:link-body>3.12.6</ac:link-body></ac:link>&nbsp;Terminal Token</h4><p>Terminal tokens refer to a character or sequence of characters. They can be written unadorned in the grammar definition.</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  BalancedParens : ( BalancedParens )
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces the following:</p>
+  <div style="margin: 1em 0em 1em 2em;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">BalancedParens</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="BalancedParens">
+      <ac:link-body>BalancedParens</ac:link-body>
+    </ac:link></span><span style="font-style: normal;font-weight: bold;margin: 0 1ex;">:</span><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>(</strong></span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">BalancedParens</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="BalancedParens">
+      <ac:link-body>BalancedParens</ac:link-body>
+    </ac:link></span></span><span style="margin: 0 1ex 0 1ex;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>)</strong></span></span></div></div><p>Any sequence of characters can be written to indicate a terminal token:</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  WhileStatement : while ( Expression ) { Statements }
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces</p>
+  <div style="margin: 1em 0em 1em 2em;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">WhileStatement</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="WhileStatement">
+      <ac:link-body>WhileStatement</ac:link-body>
+    </ac:link></span><span style="font-style: normal;font-weight: bold;margin: 0 1ex;">:</span><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>while</strong></span></span><span style="margin: 0 1ex 0 1ex;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>(</strong></span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Expression</span></span><span style="margin: 0 1ex 0 1ex;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>)</strong></span></span><span style="margin: 0 1ex 0 1ex;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>{</strong></span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Statements</span></span><span style="margin: 0 1ex 0 1ex;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>}</strong></span></span></div></div><p>Terminals can also be quoted with back&#8208;ticks <code>`</code> to remove any ambiguity from other meanings, for example to allow a terminal token to start with an uppercase letter, or a slash <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">/</code> or backslash <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">\</code>, or later contain a <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">]</code> or <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">}</code>.</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  DivisionExpression : Expression `/` Expression
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces</p>
+  <div style="margin: 1em 0em 1em 2em;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">DivisionExpression</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="DivisionExpression">
+      <ac:link-body>DivisionExpression</ac:link-body>
+    </ac:link></span><span style="font-style: normal;font-weight: bold;margin: 0 1ex;">:</span><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Expression</span></span><span style="margin: 0 1ex 0 1ex;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>/</strong></span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Expression</span></span></div></div><ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Regular-Expression</ac:parameter>
+  </ac:structured-macro><h4><ac:link ac:anchor="sec-Regular-Expression"><ac:link-body>3.12.7</ac:link-body></ac:link>&nbsp;Regular Expression</h4><p>When a grammar is intended to be interpretted as a single token and can be clearly written as a regular expression, you can do so directly.</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  UppercaseWord : /[A-Z][a-z]*/
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces the following:</p>
+  <div style="margin: 1em 0em 1em 2em;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">UppercaseWord</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="UppercaseWord">
+      <ac:link-body>UppercaseWord</ac:link-body>
+    </ac:link></span><span style="font-style: normal;font-weight: bold;margin: 0 1ex;">:</span><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="color: rgb(51, 51, 51);font-family: monospace;margin-left: 1ex;"><strong>/[A-Z][a-z]*/</strong></span></span></div></div><ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Quantifiers</ac:parameter>
+  </ac:structured-macro><h4><ac:link ac:anchor="sec-Quantifiers"><ac:link-body>3.12.8</ac:link-body></ac:link>&nbsp;Quantifiers</h4><p>Tokens can be followed by quantifiers to alter their meaning and as a short&#8208;hand for common patterns of optionality and repetition.</p>
+  <div style="margin-top: 2em; color:rgb(20,20,20)"><h6>Optional Tokens</h6><p>A subscript suffix <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">Token?</code> renders as <span><span style="font-style:italic;">
+  Token</span><span style="font-size: 85%;font-style: normal;vertical-align: sub;"><span style="color: #83238E;">opt</span></span></span> and is a shorthand for two possible definitions, one including that token and one excluding it.</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  Sentence : Noun Verb Adverb?
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces the following:</p>
+  <div style="margin: 1em 0em 1em 2em;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Sentence</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Sentence">
+      <ac:link-body>Sentence</ac:link-body>
+    </ac:link></span><span style="font-style: normal;font-weight: bold;margin: 0 1ex;">:</span><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Noun</span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Verb</span></span><span style="margin: 0 1ex 0 1ex;"><span><span style="font-style:italic;">
+  Adverb</span><span style="font-size: 85%;font-style: normal;vertical-align: sub;"><span style="color: #83238E;">opt</span></span></span></span></div></div><p>Which is shorthand for:</p>
+  <div style="margin: 1em 0em 1em 2em;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Sentence</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Sentence">
+      <ac:link-body>Sentence</ac:link-body>
+    </ac:link></span><span style="font-style: normal;font-weight: bold;margin: 0 1ex;">:</span><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Noun</span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Verb</span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Adverb</span></span></div><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Noun</span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Verb</span></span></div></div></div>
+  <div style="margin-top: 2em; color:rgb(20,20,20)"><h6>Token Lists</h6><p>A subscript suffix <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">Token+</code> renders as <span><span style="font-style:italic;">
+  Token</span><span style="font-size: 85%;font-style: normal;vertical-align: sub;"><span style="color: rgb(51, 72, 211);">list</span></span></span> and is shorthand for a list of one or more of that token.</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  Book : Cover Page+ Cover
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces the following:</p>
+  <div style="margin: 1em 0em 1em 2em;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Book</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Book">
+      <ac:link-body>Book</ac:link-body>
+    </ac:link></span><span style="font-style: normal;font-weight: bold;margin: 0 1ex;">:</span><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Cover</span></span><span style="margin: 0 1ex 0 1ex;"><span><span style="font-style:italic;">
+  Page</span><span style="font-size: 85%;font-style: normal;vertical-align: sub;"><span style="color: rgb(51, 72, 211);">list</span></span></span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Cover</span></span></div></div><p>Which, unless your specification document declares otherwise, is shorthand for:</p>
+  <div style="margin: 1em 0em 1em 2em;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Book</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Book">
+      <ac:link-body>Book</ac:link-body>
+    </ac:link></span><span style="font-style: normal;font-weight: bold;margin: 0 1ex;">:</span><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Cover</span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Page_list</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Page_list">
+      <ac:link-body>Page_list</ac:link-body>
+    </ac:link></span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Cover</span></span></div></div><div style="margin: 1em 0em 1em 2em;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Page_list</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Page_list">
+      <ac:link-body>Page_list</ac:link-body>
+    </ac:link></span><span style="font-style: normal;font-weight: bold;margin: 0 1ex;">:</span><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Page_list</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Page_list">
+      <ac:link-body>Page_list</ac:link-body>
+    </ac:link></span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Page</span></span></div><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Page</span></span></div></div><p>Some specifications may wish to declare <span><span style="font-style:italic;">
+  Token</span><span style="font-size: 85%;font-style: normal;vertical-align: sub;"><span style="color: rgb(51, 72, 211);">list</span></span></span> as a shorthand for a comma&#8208;separated list, in which case the previous example would be shorthand for:</p>
+  <div style="margin: 1em 0em 1em 2em;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Book</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Book">
+      <ac:link-body>Book</ac:link-body>
+    </ac:link></span><span style="font-style: normal;font-weight: bold;margin: 0 1ex;">:</span><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Cover</span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Page_list</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Page_list">
+      <ac:link-body>Page_list</ac:link-body>
+    </ac:link></span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Cover</span></span></div></div><div style="margin: 1em 0em 1em 2em;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Page_list</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Page_list">
+      <ac:link-body>Page_list</ac:link-body>
+    </ac:link></span><span style="font-style: normal;font-weight: bold;margin: 0 1ex;">:</span><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Page_list</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Page_list">
+      <ac:link-body>Page_list</ac:link-body>
+    </ac:link></span></span><span style="margin: 0 1ex 0 1ex;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>,</strong></span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Page</span></span></div><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Page</span></span></div></div></div>
+  <div style="margin-top: 2em; color:rgb(20,20,20)"><h6>Optional Lists</h6><p>A subscript suffix <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">Token*</code> renders as <span><span style="font-style:italic;">
+  Token</span><span style="font-size: 85%;font-style: normal;vertical-align: sub;"><span style="color: rgb(51, 72, 211);">list</span><span style="color: rgb(102, 102, 102);">, </span><span style="color: #83238E;">opt</span></span></span> and is shorthand for an optional list, which describes zero or more of that token.</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  Sandwich : Bread Topping* Bread
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces the following:</p>
+  <div style="margin: 1em 0em 1em 2em;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Sandwich</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Sandwich">
+      <ac:link-body>Sandwich</ac:link-body>
+    </ac:link></span><span style="font-style: normal;font-weight: bold;margin: 0 1ex;">:</span><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Bread</span></span><span style="margin: 0 1ex 0 1ex;"><span><span style="font-style:italic;">
+  Topping</span><span style="font-size: 85%;font-style: normal;vertical-align: sub;"><span style="color: rgb(51, 72, 211);">list</span><span style="color: rgb(102, 102, 102);">, </span><span style="color: #83238E;">opt</span></span></span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Bread</span></span></div></div><p>Which is shorthand for:</p>
+  <div style="margin: 1em 0em 1em 2em;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Sandwich</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Sandwich">
+      <ac:link-body>Sandwich</ac:link-body>
+    </ac:link></span><span style="font-style: normal;font-weight: bold;margin: 0 1ex;">:</span><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Bread</span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Topping_list</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Topping_list">
+      <ac:link-body>Topping_list</ac:link-body>
+    </ac:link></span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Bread</span></span></div><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Bread</span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Bread</span></span></div></div><div style="margin: 1em 0em 1em 2em;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Topping_list</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Topping_list">
+      <ac:link-body>Topping_list</ac:link-body>
+    </ac:link></span><span style="font-style: normal;font-weight: bold;margin: 0 1ex;">:</span><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Topping_list</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Topping_list">
+      <ac:link-body>Topping_list</ac:link-body>
+    </ac:link></span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Topping</span></span></div><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Topping</span></span></div></div></div>
+  <div style="margin-top: 2em; color:rgb(20,20,20)"><h6>Use with Non-Terminals</h6><p>Quantifiers also apply to non&#8208;terminal tokens with the same rules. For example:</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">markdown</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  UnionMembers :
+    - UnionMembers | NamedType
+    - `|`? NamedType
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces the following:</p>
+  <div style="margin: 1em 0em 1em 2em;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">UnionMembers</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="UnionMembers">
+      <ac:link-body>UnionMembers</ac:link-body>
+    </ac:link></span><span style="font-style: normal;font-weight: bold;margin: 0 1ex;">:</span><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">UnionMembers</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="UnionMembers">
+      <ac:link-body>UnionMembers</ac:link-body>
+    </ac:link></span></span><span style="margin: 0 1ex 0 1ex;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>|</strong></span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  NamedType</span></span></div><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>|</strong></span><span style="font-size: 85%;font-style: normal;vertical-align: sub;"><span style="color: #83238E;">opt</span></span></span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  NamedType</span></span></div></div><p>However, unquoted non&#8208;terminals may use the <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">*</code>, <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">?</code> and <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">+</code> characters, so always quote the terminal if the intent is to apply a quantifer.</p>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">Counter-Example-8</ac:parameter>
+  </ac:structured-macro>
+  <ac:link ac:anchor="Counter-Example-8">
+    <ac:link-body>Counter Example #8</ac:link-body>
+  </ac:link><ac:structured-macro ac:name="code"><ac:parameter ac:name="title">Counter Example #8</ac:parameter><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">markdown</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  UnionMembers :
+    - UnionMembers | NamedType
+    - |? NamedType
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces the terminal <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">|?</code>, not an optional <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">|</code>:</p>
+  <div style="margin: 1em 0em 1em 2em;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">UnionMembers</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="UnionMembers">
+      <ac:link-body>UnionMembers</ac:link-body>
+    </ac:link></span><span style="font-style: normal;font-weight: bold;margin: 0 1ex;">:</span><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">UnionMembers</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="UnionMembers">
+      <ac:link-body>UnionMembers</ac:link-body>
+    </ac:link></span></span><span style="margin: 0 1ex 0 1ex;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>|</strong></span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  NamedType</span></span></div><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>|?</strong></span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  NamedType</span></span></div></div></div>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Conditional-Parameters</ac:parameter>
+  </ac:structured-macro><h4><ac:link ac:anchor="sec-Conditional-Parameters"><ac:link-body>3.12.9</ac:link-body></ac:link>&nbsp;Conditional Parameters</h4><p>It can be a useful short&#8208;hand to provide conditional parameters when defining a non&#8208;terminal token rather than defining two very similar non&#8208;terminals.</p>
+  <p>A conditional parameter is written in braces <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">Token[Param]</code> and renders as <span style="font-style:italic;">
+  Token<span style="font-size: 75%;font-style: normal;vertical-align: sub;color: rgb(28, 120, 89);">[<span style="color: rgb(102, 102, 102);">Param</span>]</span></span>. When used in definitions is shorthand for two symbol definitions: one appended with that parameter name, the other without.</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  Example[WithCondition] : "Definition TBD"
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces the following:</p>
+  <div style="margin: 1em 0em 1em 2em;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Example</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Example">
+      <ac:link-body>Example</ac:link-body>
+    </ac:link><span style="font-size: 75%;font-style: normal;vertical-align: sub;color: rgb(28, 120, 89);">[<span style="color: rgb(102, 102, 102);">WithCondition</span>]</span></span><span style="font-style: normal;font-weight: bold;margin: 0 1ex;">:</span><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="color: rgb(102, 102, 102); margin-left: 1ex;">Definition TBD</span></span></div></div><p>Which is shorthand for:</p>
+  <div style="margin: 1em 0em 1em 2em;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Example</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Example">
+      <ac:link-body>Example</ac:link-body>
+    </ac:link></span><span style="font-style: normal;font-weight: bold;margin: 0 1ex;">:</span><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="color: rgb(102, 102, 102); margin-left: 1ex;">Definition TBD</span></span></div></div><div style="margin: 1em 0em 1em 2em;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Example_WithCondition</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Example_WithCondition">
+      <ac:link-body>Example_WithCondition</ac:link-body>
+    </ac:link></span><span style="font-style: normal;font-weight: bold;margin: 0 1ex;">:</span><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="color: rgb(102, 102, 102); margin-left: 1ex;">Definition TBD</span></span></div></div><p>The conditions are applied at the beginning of a definition for the non&#8208;terminal by prefixing with <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">[if Param]</code> (alternatively <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">[+Param]</code>) or <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">[if not Param]</code> (alternatively <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">[~Param]</code>) to only include the definition when the variant with the conditional parameter is or is not used, respectively.</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  Example[WithCondition] :
+    - A
+    - [if WithCondition] B
+    - [if not WithCondition] C
+    - [+WithCondition] D
+    - [~WithCondition] E
+  
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces the following:</p>
+  <div style="margin: 1em 0em 1em 2em;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Example</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Example">
+      <ac:link-body>Example</ac:link-body>
+    </ac:link><span style="font-size: 75%;font-style: normal;vertical-align: sub;color: rgb(28, 120, 89);">[<span style="color: rgb(102, 102, 102);">WithCondition</span>]</span></span><span style="font-style: normal;font-weight: bold;margin: 0 1ex;">:</span><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  A</span></span></div><div style="margin: 0em 0em 0em 2em;"><span style="color: rgb(28, 119, 88);font-size: 85%;">[if WithCondition]</span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  B</span></span></div><div style="margin: 0em 0em 0em 2em;"><span style="color: rgb(28, 119, 88);font-size: 85%;">[if not WithCondition]</span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  C</span></span></div><div style="margin: 0em 0em 0em 2em;"><span style="color: rgb(28, 119, 88);font-size: 85%;">[if WithCondition]</span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  D</span></span></div><div style="margin: 0em 0em 0em 2em;"><span style="color: rgb(28, 119, 88);font-size: 85%;">[if not WithCondition]</span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  E</span></span></div></div><p>Which is shorthand for:</p>
+  <div style="margin: 1em 0em 1em 2em;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Example</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Example">
+      <ac:link-body>Example</ac:link-body>
+    </ac:link></span><span style="font-style: normal;font-weight: bold;margin: 0 1ex;">:</span><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  A</span></span></div><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  C</span></span></div><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  E</span></span></div></div><div style="margin: 1em 0em 1em 2em;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Example_WithCondition</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Example_WithCondition">
+      <ac:link-body>Example_WithCondition</ac:link-body>
+    </ac:link></span><span style="font-style: normal;font-weight: bold;margin: 0 1ex;">:</span><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  A</span></span></div><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  B</span></span></div><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  D</span></span></div></div><p>The same bracket suffix on a non&#8208;terminal within a rule is shorthand for using that variant of the rule. If the parameter starts with <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">?</code>, that form of the symbol is conditionally used only in the derived production with the same parameter. If the parameter starts with <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">!</code>, that form of the symbol is only used when in the derived production <em>without</em> that parameter.</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  Example[WithCondition] :
+    - Example
+    - Example[WithCondition]
+    - Example[?WithCondition]
+    - Example[!WithCondition]
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces the following:</p>
+  <div style="margin: 1em 0em 1em 2em;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Example</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Example">
+      <ac:link-body>Example</ac:link-body>
+    </ac:link><span style="font-size: 75%;font-style: normal;vertical-align: sub;color: rgb(28, 120, 89);">[<span style="color: rgb(102, 102, 102);">WithCondition</span>]</span></span><span style="font-style: normal;font-weight: bold;margin: 0 1ex;">:</span><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Example</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Example">
+      <ac:link-body>Example</ac:link-body>
+    </ac:link></span></span></div><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Example</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Example">
+      <ac:link-body>Example</ac:link-body>
+    </ac:link><span style="font-size: 75%;font-style: normal;vertical-align: sub;color: rgb(28, 120, 89);">[<span style="color: rgb(102, 102, 102);">WithCondition</span>]</span></span></span></div><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Example</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Example">
+      <ac:link-body>Example</ac:link-body>
+    </ac:link><span style="font-size: 75%;font-style: normal;vertical-align: sub;color: rgb(28, 120, 89);">[<span style="color: rgb(102, 102, 102);">?WithCondition</span>]</span></span></span></div><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Example</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Example">
+      <ac:link-body>Example</ac:link-body>
+    </ac:link><span style="font-size: 75%;font-style: normal;vertical-align: sub;color: rgb(28, 120, 89);">[<span style="color: rgb(102, 102, 102);">!WithCondition</span>]</span></span></span></div></div><p>Which is shorthand for:</p>
+  <div style="margin: 1em 0em 1em 2em;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Example</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Example">
+      <ac:link-body>Example</ac:link-body>
+    </ac:link></span><span style="font-style: normal;font-weight: bold;margin: 0 1ex;">:</span><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Example</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Example">
+      <ac:link-body>Example</ac:link-body>
+    </ac:link></span></span></div><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Example_WithCondition</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Example_WithCondition">
+      <ac:link-body>Example_WithCondition</ac:link-body>
+    </ac:link></span></span></div><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Example</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Example">
+      <ac:link-body>Example</ac:link-body>
+    </ac:link></span></span></div><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Example_WithCondition</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Example_WithCondition">
+      <ac:link-body>Example_WithCondition</ac:link-body>
+    </ac:link></span></span></div></div><div style="margin: 1em 0em 1em 2em;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Example_WithCondition</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Example_WithCondition">
+      <ac:link-body>Example_WithCondition</ac:link-body>
+    </ac:link></span><span style="font-style: normal;font-weight: bold;margin: 0 1ex;">:</span><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Example</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Example">
+      <ac:link-body>Example</ac:link-body>
+    </ac:link></span></span></div><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Example_WithCondition</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Example_WithCondition">
+      <ac:link-body>Example_WithCondition</ac:link-body>
+    </ac:link></span></span></div><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Example_WithCondition</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Example_WithCondition">
+      <ac:link-body>Example_WithCondition</ac:link-body>
+    </ac:link></span></span></div><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Example</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Example">
+      <ac:link-body>Example</ac:link-body>
+    </ac:link></span></span></div></div><p>Multiple conditional parameters can be used on both the production definition and on non&#8208;terminals within a rule, in which case it is short form for the permutation of all conditions:</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  Example[P, Q] :
+    - [if P] `p`
+    - [if Q] `q`
+    - Example[!P, ?Q]
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces the following:</p>
+  <div style="margin: 1em 0em 1em 2em;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Example</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Example">
+      <ac:link-body>Example</ac:link-body>
+    </ac:link><span style="font-size: 75%;font-style: normal;vertical-align: sub;color: rgb(28, 120, 89);">[<span style="color: rgb(102, 102, 102);">P</span>,&nbsp;<span style="color: rgb(102, 102, 102);">Q</span>]</span></span><span style="font-style: normal;font-weight: bold;margin: 0 1ex;">:</span><div style="margin: 0em 0em 0em 2em;"><span style="color: rgb(28, 119, 88);font-size: 85%;">[if P]</span><span style="margin: 0 1ex 0 1ex;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>p</strong></span></span></div><div style="margin: 0em 0em 0em 2em;"><span style="color: rgb(28, 119, 88);font-size: 85%;">[if Q]</span><span style="margin: 0 1ex 0 1ex;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>q</strong></span></span></div><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Example</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Example">
+      <ac:link-body>Example</ac:link-body>
+    </ac:link><span style="font-size: 75%;font-style: normal;vertical-align: sub;color: rgb(28, 120, 89);">[<span style="color: rgb(102, 102, 102);">!P</span>,&nbsp;<span style="color: rgb(102, 102, 102);">?Q</span>]</span></span></span></div></div><p>Which is shorthand for:</p>
+  <div style="margin: 1em 0em 1em 2em;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Example</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Example">
+      <ac:link-body>Example</ac:link-body>
+    </ac:link></span><span style="font-style: normal;font-weight: bold;margin: 0 1ex;">:</span><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Example_P</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Example_P">
+      <ac:link-body>Example_P</ac:link-body>
+    </ac:link></span></span></div></div><div style="margin: 1em 0em 1em 2em;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Example_P</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Example_P">
+      <ac:link-body>Example_P</ac:link-body>
+    </ac:link></span><span style="font-style: normal;font-weight: bold;margin: 0 1ex;">:</span><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>p</strong></span></span></div><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Example</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Example">
+      <ac:link-body>Example</ac:link-body>
+    </ac:link></span></span></div></div><div style="margin: 1em 0em 1em 2em;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Example_Q</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Example_Q">
+      <ac:link-body>Example_Q</ac:link-body>
+    </ac:link></span><span style="font-style: normal;font-weight: bold;margin: 0 1ex;">:</span><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>q</strong></span></span></div><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Example_P_Q</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Example_P_Q">
+      <ac:link-body>Example_P_Q</ac:link-body>
+    </ac:link></span></span></div></div><div style="margin: 1em 0em 1em 2em;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Example_P_Q</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Example_P_Q">
+      <ac:link-body>Example_P_Q</ac:link-body>
+    </ac:link></span><span style="font-style: normal;font-weight: bold;margin: 0 1ex;">:</span><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>p</strong></span></span></div><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>q</strong></span></span></div><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Example_Q</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Example_Q">
+      <ac:link-body>Example_Q</ac:link-body>
+    </ac:link></span></span></div></div><p>Conditional parameters on a usage can be followed by a quantifier.</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  Example[P, ?Q]*
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces the following:</p>
+  <p><span><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Example</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Example">
+      <ac:link-body>Example</ac:link-body>
+    </ac:link><span style="font-size: 75%;font-style: normal;vertical-align: sub;color: rgb(28, 120, 89);">[<span style="color: rgb(102, 102, 102);">P</span>,&nbsp;<span style="color: rgb(102, 102, 102);">?Q</span>]</span></span><span style="font-size: 85%;font-style: normal;vertical-align: sub;"><span style="color: rgb(51, 72, 211);">list</span><span style="color: rgb(102, 102, 102);">, </span><span style="color: #83238E;">opt</span></span></span></p>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Constraints</ac:parameter>
+  </ac:structured-macro><h4><ac:link ac:anchor="sec-Constraints"><ac:link-body>3.12.10</ac:link-body></ac:link>&nbsp;Constraints</h4><p>Any token can be followed by &ldquo;but not&rdquo; or &ldquo;but not one of&rdquo; to place a further constraint on the previous token:</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  Example : A B but not foo or bar
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces the following:</p>
+  <div style="margin: 1em 0em 1em 2em;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Example</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Example">
+      <ac:link-body>Example</ac:link-body>
+    </ac:link></span><span style="font-style: normal;font-weight: bold;margin: 0 1ex;">:</span><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  A</span></span><span style="margin: 0 1ex 0 1ex;"><span><span style="font-style:italic;">
+  B</span><span style="margin: 0">
+  <span style="color: rgb(102, 102, 102); font-family: Cambria, 'Palatino Linotype', Palatino, 'Liberation Serif', serif; font-weight: normal; margin: 0ex 1ex 0ex 1ex;">but not</span><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>foo</strong></span><span style="color: rgb(102, 102, 102); font-family: Cambria, 'Palatino Linotype', Palatino, 'Liberation Serif', serif; font-weight: normal; margin: 0ex 1ex 0ex 1ex;">or</span><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>bar</strong></span></span></span></span></div></div><p>Optionally can mention &ldquo;one of&rdquo;, this will be omitted when rendered. Commas can be used instead of &ldquo;or&rdquo;.</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  Example : A B but not one of foo, bar
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces the following:</p>
+  <div style="margin: 1em 0em 1em 2em;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Example</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Example">
+      <ac:link-body>Example</ac:link-body>
+    </ac:link></span><span style="font-style: normal;font-weight: bold;margin: 0 1ex;">:</span><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  A</span></span><span style="margin: 0 1ex 0 1ex;"><span><span style="font-style:italic;">
+  B</span><span style="margin: 0">
+  <span style="color: rgb(102, 102, 102); font-family: Cambria, 'Palatino Linotype', Palatino, 'Liberation Serif', serif; font-weight: normal; margin: 0ex 1ex 0ex 1ex;">but not</span><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>foo</strong></span><span style="color: rgb(102, 102, 102); font-family: Cambria, 'Palatino Linotype', Palatino, 'Liberation Serif', serif; font-weight: normal; margin: 0ex 1ex 0ex 1ex;">or</span><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>bar</strong></span></span></span></span></div></div><ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Meta-Tokens</ac:parameter>
+  </ac:structured-macro><h4><ac:link ac:anchor="sec-Meta-Tokens"><ac:link-body>3.12.11</ac:link-body></ac:link>&nbsp;Meta Tokens</h4><p>Spec Markdown can specify some tokens which do not consume any characters.</p>
+  <p>The empty set, written <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">[empty]</code> appears as <span style="color: rgb(102, 102, 102); margin: 0ex; 0ex; 0ex; 1ex;">[empty]</span> can be used to define a non&#8208;terminal as matching no terminal or non&#8208;terminal tokens.</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  Example : [empty]
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces the following:</p>
+  <div style="margin: 1em 0em 1em 2em;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Example</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Example">
+      <ac:link-body>Example</ac:link-body>
+    </ac:link></span><span style="font-style: normal;font-weight: bold;margin: 0 1ex;">:</span><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span style="color: rgb(102, 102, 102); margin: 0ex; 0ex; 0ex; 1ex;">[empty]</span></span></div></div><p>Lookaheads can appear anywhere in a sequence of tokens, and describe additional constraints on the following token.</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  Example :
+    - [lookahead token] Token
+    - [lookahead ! token] Token
+    - [lookahead != token] Token
+    - [lookahead NonTerminal] Token
+    - [lookahead ! NonTerminal] Token
+    - [lookahead != NonTerminal] Token
+    - [lookahead {token, set}] Token
+    - [lookahead ! {token, set}] Token
+    - [lookahead != {token, set}] Token
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces the following:</p>
+  <div style="margin: 1em 0em 1em 2em;"><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Example</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Example">
+      <ac:link-body>Example</ac:link-body>
+    </ac:link></span><span style="font-style: normal;font-weight: bold;margin: 0 1ex;">:</span><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span>
+  <span style="color: rgb(102, 102, 102); font-family: Cambria, 'Palatino Linotype', Palatino, 'Liberation Serif', serif; font-style: normal; font-weight: normal;">[&nbsp;lookahead&nbsp;=&nbsp;</span><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>token</strong></span>&nbsp;]
+  </span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Token</span></span></div><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span>
+  <span style="color: rgb(102, 102, 102); font-family: Cambria, 'Palatino Linotype', Palatino, 'Liberation Serif', serif; font-style: normal; font-weight: normal;">[&nbsp;lookahead&nbsp;&#x2260;&nbsp;</span><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>token</strong></span>&nbsp;]
+  </span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Token</span></span></div><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span>
+  <span style="color: rgb(102, 102, 102); font-family: Cambria, 'Palatino Linotype', Palatino, 'Liberation Serif', serif; font-style: normal; font-weight: normal;">[&nbsp;lookahead&nbsp;&#x2260;&nbsp;</span><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>token</strong></span>&nbsp;]
+  </span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Token</span></span></div><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span>
+  <span style="color: rgb(102, 102, 102); font-family: Cambria, 'Palatino Linotype', Palatino, 'Liberation Serif', serif; font-style: normal; font-weight: normal;">[&nbsp;lookahead&nbsp;&#x2208;&nbsp;</span><span style="font-style:italic;">
+  NonTerminal</span>&nbsp;]
+  </span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Token</span></span></div><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span>
+  <span style="color: rgb(102, 102, 102); font-family: Cambria, 'Palatino Linotype', Palatino, 'Liberation Serif', serif; font-style: normal; font-weight: normal;">[&nbsp;lookahead&nbsp;&#x2209;&nbsp;</span><span style="font-style:italic;">
+  NonTerminal</span>&nbsp;]
+  </span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Token</span></span></div><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span>
+  <span style="color: rgb(102, 102, 102); font-family: Cambria, 'Palatino Linotype', Palatino, 'Liberation Serif', serif; font-style: normal; font-weight: normal;">[&nbsp;lookahead&nbsp;&#x2209;&nbsp;</span><span style="font-style:italic;">
+  NonTerminal</span>&nbsp;]
+  </span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Token</span></span></div><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span>
+  <span style="color: rgb(102, 102, 102); font-family: Cambria, 'Palatino Linotype', Palatino, 'Liberation Serif', serif; font-style: normal; font-weight: normal;">[&nbsp;lookahead&nbsp;&#x2208;&nbsp;</span>{<span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>token</strong></span><span style="color: rgb(102, 102, 102); font-family: Cambria, 'Palatino Linotype', Palatino, 'Liberation Serif', serif; font-style: normal; font-weight: normal;">,&nbsp;</span><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>set</strong></span>}&nbsp;]
+  </span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Token</span></span></div><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span>
+  <span style="color: rgb(102, 102, 102); font-family: Cambria, 'Palatino Linotype', Palatino, 'Liberation Serif', serif; font-style: normal; font-weight: normal;">[&nbsp;lookahead&nbsp;&#x2209;&nbsp;</span>{<span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>token</strong></span><span style="color: rgb(102, 102, 102); font-family: Cambria, 'Palatino Linotype', Palatino, 'Liberation Serif', serif; font-style: normal; font-weight: normal;">,&nbsp;</span><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>set</strong></span>}&nbsp;]
+  </span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Token</span></span></div><div style="margin: 0em 0em 0em 2em;"><span style="margin: 0 1ex 0 1ex;"><span>
+  <span style="color: rgb(102, 102, 102); font-family: Cambria, 'Palatino Linotype', Palatino, 'Liberation Serif', serif; font-style: normal; font-weight: normal;">[&nbsp;lookahead&nbsp;&#x2209;&nbsp;</span>{<span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>token</strong></span><span style="color: rgb(102, 102, 102); font-family: Cambria, 'Palatino Linotype', Palatino, 'Liberation Serif', serif; font-style: normal; font-weight: normal;">,&nbsp;</span><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>set</strong></span>}&nbsp;]
+  </span></span><span style="margin: 0 1ex 0 1ex;"><span style="font-style:italic;">
+  Token</span></span></div></div><ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Grammar-Semantics</ac:parameter>
+  </ac:structured-macro><h3><ac:link ac:anchor="sec-Grammar-Semantics"><ac:link-body>3.13</ac:link-body></ac:link>&nbsp;Grammar Semantics</h3><p>Once grammar is defined, it can be useful to define the semantics of the grammar in terms of algorithm steps. A single grammar definition followed by a list is interpretted as a grammar semantic:</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  PBJ : Bread PeanutButter Jelly Bread
+  
+  * Let {bottomBread} be the result of placing the first {Bread} on the plate.
+  * Let {pbSpread} be the result of getting {PeanutButter} from the jar.
+  * Spread {pbSpread} onto {bottomBread}.
+  * Let {topBread} be the result of placing the last {Bread} on the plate.
+  * Let {jamSpread} be the result of getting {Jelly} from the jar.
+  * Spread {jamSpread} onto {topBread}.
+  * Let {sandwich} be the result of rotating {topBread} 180&deg; and placing on {bottomBread}.
+  * Return {sandwich}.
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces the following:</p>
+  <div><span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">PBJ</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="PBJ">
+      <ac:link-body>PBJ</ac:link-body>
+    </ac:link></span><span style="font-style: normal;font-weight: bold;margin: 0 1ex;">:</span><span><span style="font-style:italic;">
+  Bread</span><span style="font-style:italic;">
+  PeanutButter</span><span style="font-style:italic;">
+  Jelly</span><span style="font-style:italic;">
+  Bread</span></span><ol><li>Let <em>bottomBread</em> be the result of placing the first <span style="font-style:italic;">
+  Bread</span> on the plate.</li><li>Let <em>pbSpread</em> be the result of <span style="font-style:italic;">
+  PeanutButter</span>.</li><li>Spread <em>pbSpread</em> onto <em>bottomBread</em>.</li><li>Let <em>topBread</em> be the result of placing the last <span style="font-style:italic;">
+  Bread</span> on the plate.</li><li>Let <em>jamSpread</em> be the result of <span style="font-style:italic;">
+  Jelly</span>.</li><li>Spread <em>jamSpread</em> onto <em>topBread</em>.</li><li>Let <em>sandwich</em> be the result of rotating <em>topBread</em> 180&deg; and placing on <em>bottomBread</em>.</li><li>Return <em>sandwich</em>.</li></ol></div><ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Value-Literals</ac:parameter>
+  </ac:structured-macro><h3><ac:link ac:anchor="sec-Value-Literals"><ac:link-body>3.14</ac:link-body></ac:link>&nbsp;Value Literals</h3><p>Value literals allow any text to refer to a value which has semantic meaning in the specification by wrapping it in <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">{ }</code> curly brace characters.</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  I can reference {foo}, {"foo"}, {null}, {true}.
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces the following:</p>
+  <p>I can reference <em>foo</em>, <span style="font-family: Consolas, Monaco, monospace;font-size: 85%;white-space: pre;">"foo"</span>, <strong>null</strong>, <strong>true</strong>.</p>
+  <div style="margin-top: 2em; color:rgb(20,20,20)"><h6>Variables</h6><p>Write <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">{foo}</code> to produce a variable (represented by a &lt;var&gt; tag) like <em>foo</em>.</p>
+  </div>
+  <div style="margin-top: 2em; color:rgb(20,20,20)"><h6>Keywords</h6><p>Some known keywords like <strong>null</strong>, <strong>undefined</strong>, <strong>true</strong> and <strong>false</strong> are rendered as constants instead of variables.</p>
+  </div>
+  <div style="margin-top: 2em; color:rgb(20,20,20)"><h6>String literal</h6><p>Write <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">{&quot;foo&quot;}</code> to produce a string literal like <span style="font-family: Consolas, Monaco, monospace;font-size: 85%;white-space: pre;">"foo"</span>.</p>
+  </div>
+  <div style="margin-top: 2em; color:rgb(20,20,20)"><h6>Grammar tokens</h6><p>Any grammar token can be written inline, like <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">{Example}</code> to represent the non&#8208;terminal token <span style="font-style:italic;">
+    <ac:structured-macro ac:name="anchor">
+      <ac:parameter ac:name="">Example</ac:parameter>
+    </ac:structured-macro><ac:link ac:anchor="Example">
+      <ac:link-body>Example</ac:link-body>
+    </ac:link></span>, <code>{`terminal`}</code> to represent the terminal token <span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>terminal</strong></span>. Even meta tokens like <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">{[empty]}</code> for <span style="color: rgb(102, 102, 102); margin: 0ex; 0ex; 0ex; 1ex;">[empty]</span> and <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">{[lookahead !{ x, y }]}</code> for <span>
+  <span style="color: rgb(102, 102, 102); font-family: Cambria, 'Palatino Linotype', Palatino, 'Liberation Serif', serif; font-style: normal; font-weight: normal;">[&nbsp;lookahead&nbsp;&#x2209;&nbsp;</span>{<span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>x</strong></span><span style="color: rgb(102, 102, 102); font-family: Cambria, 'Palatino Linotype', Palatino, 'Liberation Serif', serif; font-style: normal; font-weight: normal;">,&nbsp;</span><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>y</strong></span>}&nbsp;]
+  </span>.</p>
+  </div>
+  <div style="margin-top: 2em; color:rgb(20,20,20)"><h6>Algorithm calls</h6><p>A call to an algorithm can be expressed as a value literal:</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  {Algorithm(foo, "string", null)}
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces the following:</p>
+  <p><span>
+  Algorithm(<em>foo</em>, <span style="font-family: Consolas, Monaco, monospace;font-size: 85%;white-space: pre;">"string"</span>, <strong>null</strong>)
+  </span></p>
+  </div>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Biblio</ac:parameter>
+  </ac:structured-macro><h3><ac:link ac:anchor="sec-Biblio"><ac:link-body>3.15</ac:link-body></ac:link>&nbsp;Biblio</h3><p>By supplying a <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">&quot;biblio&quot;</code> key in a metadata file, you can have Algorithm calls and Non&#8208;terminal tokens which are not defined in this spec to link to where they are defined.</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  spec-md -m metadata.json myspec.md
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Where metadata.json includes:</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  {
+    "biblio": {
+      "http://people.mozilla.org/~jorendorff/es6-draft.html": {
+        "Identifier": "#sec-names-and-keywords",
+        "PrimaryExpression": "#sec-primary-expression",
+        "ReturnIfAbrupt()": "#sec-returnifabrupt",
+        "Get()": "#sec-get-o-p"
+      }
+    }
+  }
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Then referring to these tokens will link out to that page.</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">text</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  MemberExpression : PrimaryExpression . Identifier
+  
+    * Let {reference} be the result of evaluating {PrimaryExpression}.
+    * Let {propName} be the string value of {Identifier}.
+    * Let {value} be {Get(reference, propName)}.
+    * {ReturnIfAbrupt(value)}.
+    * Return {value}.
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>Produces the following:</p>
+  <div><span style="font-style:italic;">
+  MemberExpression</span><span style="font-style: normal;font-weight: bold;margin: 0 1ex;">:</span><span><span style="font-style:italic;">
+  PrimaryExpression</span><span style="color: rgb(51, 51, 51); font-family: monospace;"><strong>.</strong></span><span style="font-style:italic;">
+  Identifier</span></span><ol><li>Let <em>reference</em> be the result of evaluating <span style="font-style:italic;">
+  PrimaryExpression</span>.</li><li>Let <em>propName</em> be the string value of <span style="font-style:italic;">
+  Identifier</span>.</li><li>Let <em>value</em> be <span>
+  Get(<em>reference</em>, <em>propName</em>)
+  </span>.</li><li><span>
+  ReturnIfAbrupt(<em>value</em>)
+  </span>.</li><li>Return <em>value</em>. </li></ol></div><ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Using-Spec-Markdown</ac:parameter>
+  </ac:structured-macro><h2><ac:link ac:anchor="sec-Using-Spec-Markdown"><ac:link-body>A</ac:link-body></ac:link>&nbsp;Using Spec Markdown</h2><p>If installed globally, using <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">spec-md</code> as a shell executable is the easiest way to use Spec Markdown. The <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">spec-md</code> executable expects a filepath to a Markdown document as input and outputs HTML on stdout. Use <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">&gt;</code> to write stdout to a file.</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">sh</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  npm install -g spec-md
+  spec-md ./path/to/markdown.md > ./path/to/output.html
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>You can also require <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">spec-md</code> as a node module, after which you might add the <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">spec-md</code> command as a <a href="https://docs.npmjs.com/cli/run-script">node script</a>.</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">sh</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  npm install --save-dev spec-md
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">JavaScript</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  var fs = require('fs');
+  var specMarkdown = require('spec-md');
+  specMarkdown.html('./path/to/markdown.md').then(function (html) {
+    fs.writeFile('./path/to/output.html', html);
+  });
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><p>The <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">spec-md</code> node module provides a few functions:</p>
+  <ul><li><span>
+  html(<em>filePath</em>, <em>options</em>)
+  </span> takes a <em>filepath</em> to a Markdown file and returns a Promise which will resolve to a beautified HTML string. This function is the primary usage of the <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">spec-md</code> module.</li><li><span>
+  parse(<em>filePath</em>)
+  </span> takes a filepath and returns a Promise which will resolve to an AST <em>(Abstract Syntax Tree)</em> representing the contents of the Spec Markdown file, with all imports already inlined.</li><li><span>
+  print(<em>ast</em>, <em>options</em>)
+  </span> takes an <em>ast</em> produced by parse() and returns an HTML string.</li><li><span>
+  visit(<em>ast</em>, <em>visitor</em>)
+  </span> takes an <em>ast</em> and a <em>visitor</em>. It walks over the <em>ast</em> in a depth&#8208;first&#8208;traversal calling the <em>visitor</em> along the way.</li></ul>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Print-Options</ac:parameter>
+  </ac:structured-macro><h3><ac:link ac:anchor="sec-Print-Options"><ac:link-body>A.1</ac:link-body></ac:link>&nbsp;Print Options</h3><p>The <span>
+  html(<em>filePath</em>, <em>options</em>)
+  </span> and <span>
+  print(<em>filePath</em>)
+  </span> functions both take <em>options</em> as an optional second argument. These options allow for customization control over the returned HTML, more options may be added in the future.</p>
+  <ul><li><strong>highlight</strong> - a function which is called when blocks of code are encountered, with the first argument as the string of code, the second argument being the language specified. This function should return well formed HTML, complete with escaped special characters.</li><li><strong>head</strong> - a string which is inserted in the <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">&lt;head&gt;</code> tag in the returned HTML. Use this to introduce additional meta tags and scripts.</li></ul>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Hot-rebuilding-with-nodemon</ac:parameter>
+  </ac:structured-macro><h3><ac:link ac:anchor="sec-Hot-rebuilding-with-nodemon"><ac:link-body>A.2</ac:link-body></ac:link>&nbsp;Hot rebuilding with nodemon</h3><p>The <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">spec-md</code> shell executable follows the <a href="http://www.faqs.org/docs/artu/ch01s06.html">Unix Philosophy</a> of doing one thing and doing it well. Try out <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">nodemon</code> to continuously rebuild the HTML output as you edit the markdown specification:</p>
+  <ac:structured-macro ac:name="code"><ac:parameter ac:name="theme">Eclipse</ac:parameter>
+     <ac:parameter ac:name="linenumbers">true</ac:parameter>
+     <ac:parameter ac:name="language">sh</ac:parameter>
+     <ac:parameter ac:name="firstline">0001</ac:parameter>
+     <ac:parameter ac:name="collapse">false</ac:parameter>
+     <ac:plain-text-body><![CDATA[  npm install -g nodemon
+  nodemon --exec "spec-md > ./path/to/output.html" ./path/to/markdown.md
+    ]]></ac:plain-text-body>
+   </ac:structured-macro><ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Contributing-to-Spec-Markdown</ac:parameter>
+  </ac:structured-macro><h2><ac:link ac:anchor="sec-Contributing-to-Spec-Markdown"><ac:link-body>B</ac:link-body></ac:link>&nbsp;Contributing to Spec Markdown</h2><p>We want to make contributing to this project as easy and transparent as possible. Hopefully this document makes the process for contributing clear and answers any questions you may have. If not, feel free to open an <a href="https://github.com/leebyron/spec-md/issues">Issue</a>.</p>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Pull-Requests</ac:parameter>
+  </ac:structured-macro><h3><ac:link ac:anchor="sec-Pull-Requests"><ac:link-body>B.1</ac:link-body></ac:link>&nbsp;Pull Requests</h3><p>All active development of Spec Markdown happens on GitHub. We actively welcome your <a href="https://help.github.com/articles/creating-a-pull-request">pull requests</a>.</p>
+  <ol><li><a href="https://github.com/leebyron/spec-md/">Fork the repo</a> and create your branch from <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">master</code>.</li><li>Install all dependencies. (<code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">npm install</code>)</li><li>If you&rsquo;ve added code, add tests.</li><li>If you&rsquo;ve changed APIs, update the documentation.</li><li>Run tests and ensure your code passes lint. (<code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">npm test</code>)</li></ol><ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec--master-is-unsafe</ac:parameter>
+  </ac:structured-macro><h3><ac:link ac:anchor="sec--master-is-unsafe"><ac:link-body>B.2</ac:link-body></ac:link>&nbsp;`master` is unsafe</h3><p>We will do our best to keep <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">master</code> in good shape, with tests passing at all times. But in order to move fast, we might make API changes that your application might not be compatible with. We will do our best to communicate these changes and always <a href="http://semver.org/">version</a> appropriately so you can lock into a specific version if need be. If any of this is worrysome to you, just use <a href="https://www.npmjs.org/package/spec-md">npm</a>.</p>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Issues</ac:parameter>
+  </ac:structured-macro><h3><ac:link ac:anchor="sec-Issues"><ac:link-body>B.3</ac:link-body></ac:link>&nbsp;Issues</h3><p>We use GitHub issues to track public bugs and requests. Please ensure your bug description is clear and has sufficient instructions to be able to reproduce the issue. The best way is to provide a reduced test case on jsFiddle or jsBin.</p>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-Coding-Style</ac:parameter>
+  </ac:structured-macro><h3><ac:link ac:anchor="sec-Coding-Style"><ac:link-body>B.4</ac:link-body></ac:link>&nbsp;Coding Style</h3><ul><li>2 spaces for indentation (no tabs)</li><li>80 character line length strongly preferred.</li><li>Prefer <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">&#x27;</code> over <code style="background: rgb(200,200,200); font-family: Consolas, Monaco, monospace;font-size: 85%;font-weight: inherit;margin: -2px -1px;padding: 3px 3px;white-space: pre;">&quot;</code></li><li>Use semicolons;</li><li>Trailing commas,</li><li>Avd abbr wrds.</li></ul>
+  <ac:structured-macro ac:name="anchor">
+    <ac:parameter ac:name="">sec-License</ac:parameter>
+  </ac:structured-macro><h3><ac:link ac:anchor="sec-License"><ac:link-body>B.5</ac:link-body></ac:link>&nbsp;License</h3><p>By contributing to Spec Markdown, you agree that your contributions will be licensed under its MIT license. </p>
+  <div>
+    <h1>§Index</h1>
+    <ol>
+      <li>
+        <ac:link ac:anchor="Algorithm()">
+          <ac:link-body>Algorithm</ac:link-body>
+        </ac:link>
+      </li>
+      <li>
+        <ac:link ac:anchor="AssignmentOperator">
+          <ac:link-body>AssignmentOperator</ac:link-body>
+        </ac:link>
+      </li>
+      <li>
+        <ac:link ac:anchor="BalancedParens">
+          <ac:link-body>BalancedParens</ac:link-body>
+        </ac:link>
+      </li>
+      <li>
+        <ac:link ac:anchor="Book">
+          <ac:link-body>Book</ac:link-body>
+        </ac:link>
+      </li>
+      <li>
+        <ac:link ac:anchor="DivisionExpression">
+          <ac:link-body>DivisionExpression</ac:link-body>
+        </ac:link>
+      </li>
+      <li>
+        <ac:link ac:anchor="Example">
+          <ac:link-body>Example</ac:link-body>
+        </ac:link>
+      </li>
+      <li>
+        <ac:link ac:anchor="Example_P">
+          <ac:link-body>Example_P</ac:link-body>
+        </ac:link>
+      </li>
+      <li>
+        <ac:link ac:anchor="Example_P_Q">
+          <ac:link-body>Example_P_Q</ac:link-body>
+        </ac:link>
+      </li>
+      <li>
+        <ac:link ac:anchor="Example_Q">
+          <ac:link-body>Example_Q</ac:link-body>
+        </ac:link>
+      </li>
+      <li>
+        <ac:link ac:anchor="Example_WithCondition">
+          <ac:link-body>Example_WithCondition</ac:link-body>
+        </ac:link>
+      </li>
+      <li>
+        <ac:link ac:anchor="Keyword">
+          <ac:link-body>Keyword</ac:link-body>
+        </ac:link>
+      </li>
+      <li>
+        <ac:link ac:anchor="PBJ">
+          <ac:link-body>PBJ</ac:link-body>
+        </ac:link>
+      </li>
+      <li>
+        <ac:link ac:anchor="Page_list">
+          <ac:link-body>Page_list</ac:link-body>
+        </ac:link>
+      </li>
+      <li>
+        <ac:link ac:anchor="Sandwich">
+          <ac:link-body>Sandwich</ac:link-body>
+        </ac:link>
+      </li>
+      <li>
+        <ac:link ac:anchor="Sentence">
+          <ac:link-body>Sentence</ac:link-body>
+        </ac:link>
+      </li>
+      <li>
+        <ac:link ac:anchor="Topping_list">
+          <ac:link-body>Topping_list</ac:link-body>
+        </ac:link>
+      </li>
+      <li>
+        <ac:link ac:anchor="TypeOne">
+          <ac:link-body>TypeOne</ac:link-body>
+        </ac:link>
+      </li>
+      <li>
+        <ac:link ac:anchor="TypeThree">
+          <ac:link-body>TypeThree</ac:link-body>
+        </ac:link>
+      </li>
+      <li>
+        <ac:link ac:anchor="TypeTwo">
+          <ac:link-body>TypeTwo</ac:link-body>
+        </ac:link>
+      </li>
+      <li>
+        <ac:link ac:anchor="UnionMembers">
+          <ac:link-body>UnionMembers</ac:link-body>
+        </ac:link>
+      </li>
+      <li>
+        <ac:link ac:anchor="UppercaseWord">
+          <ac:link-body>UppercaseWord</ac:link-body>
+        </ac:link>
+      </li>
+      <li>
+        <ac:link ac:anchor="WhileStatement">
+          <ac:link-body>WhileStatement</ac:link-body>
+        </ac:link>
+      </li>
+    </ol>
+  </div>
+  
+</div>

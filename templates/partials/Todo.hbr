@@ -1,0 +1,3 @@
+<ac:structured-macro ac:name="note">
+<ac:rich-text-body>{{>contents contents}}</ac:rich-text-body>
+</ac:structured-macro>

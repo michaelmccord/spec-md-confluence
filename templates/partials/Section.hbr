@@ -1,0 +1,4 @@
+<ac:structured-macro ac:name="anchor">
+  <ac:parameter ac:name="">{{{removeAnchorization (lookup @root.options.biblio id) }}}</ac:parameter>
+</ac:structured-macro><h{{{add (length secID) 1 }}}><ac:link ac:anchor="{{{removeAnchorization (lookup @root.options.biblio id) }}}"><ac:link-body>{{join secID '.'}}</ac:link-body></ac:link>&nbsp;{{{escape title}}}</h{{{add (length secID) 1 }}}>
+{{~>contents contents~}}

@@ -1,0 +1,6 @@
+<div>
+  {{>Intro ast }}
+  {{>TOC ast }}
+  {{>Body ast}}
+  {{>DocumentIndex ast }}
+</div>

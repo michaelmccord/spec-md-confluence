@@ -1,0 +1,4 @@
+<div style="margin: 1em 0em 1em 2em;">
+{{~>(lookup token 'type') token~}}<span style="font-style: normal;font-weight: bold;margin: 0 1ex;">{{{repeat ':' defType}}}</span>
+{{~>(lookup rhs 'type') rhs~}}
+</div>

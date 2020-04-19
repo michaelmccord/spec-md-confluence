@@ -1,0 +1,9 @@
+<span>{{~>(lookup token 'type') token ~}}<span style="font-size: 85%;font-style: normal;vertical-align: sub;">
+{{~#if isList~}}
+<span style="color: rgb(51, 72, 211);">list</span>
+{{~/if~}}
+{{~#if isOptional~}}
+{{~#if isList~}}<span style="color: rgb(102, 102, 102);">, </span>{{~/if~}}
+<span style="color: #83238E;">opt</span>
+{{~/if~}}
+</span></span>

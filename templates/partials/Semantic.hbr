@@ -1,0 +1,6 @@
+<div>
+  {{~>(lookup name 'type') name~}}
+  <span style="font-style: normal;font-weight: bold;margin: 0 1ex;">{{{repeat ':' defType}}}</span>
+  {{~#with rhs~}}<span>{{~#if condition~}}{{~>(lookup condition 'type') condition~}}{{~/if~}}{{~>contents tokens~}}</span>{{~/with~}}
+  {{~>(lookup steps 'type') steps~}}
+</div>

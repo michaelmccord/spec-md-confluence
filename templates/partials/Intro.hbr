@@ -1,0 +1,5 @@
+<div id="intro">
+  {{#filterNot contents 'type' 'Section'}}
+  {{> (lookup . 'type')}}
+  {{/filterNot}}
+</div>

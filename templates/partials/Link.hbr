@@ -1,0 +1,5 @@
+{{~#if (isAnchorUrl url)~}}
+<ac:link ac:anchor="{{{encodeURI (removeAnchorization url)}}}"><ac:link-body>{{~> contents contents ~}}</ac:link-body></ac:link>
+{{~else~}}
+<a href="{{{encodeURI url}}}">{{~> contents contents ~}}</a>
+{{~/if~}}
