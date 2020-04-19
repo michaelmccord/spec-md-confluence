@@ -28,4 +28,5 @@ jobs:
     - run: yarn test
     - run: yarn release
       env:
-        CI: false
+        CI: true
+        NPM_TOKEN: '${{secrets.NPM_TOKEN}}'
