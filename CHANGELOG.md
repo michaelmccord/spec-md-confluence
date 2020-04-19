@@ -1,5 +1,12 @@
 spec-md-confluence Changelog
 
+## [1.0.8](https://github.com/michaelmccord/spec-md-confluence/compare/v1.0.7...v1.0.8) (2020-04-19)
+
+
+### Bug Fixes
+
+* fix release ([ff5c14a](https://github.com/michaelmccord/spec-md-confluence/commit/ff5c14a5c7b1273e40b78c1fa4ea9dbb9a568a97))
+
 ## [1.0.7](https://github.com/michaelmccord/spec-md-confluence/compare/v1.0.6...v1.0.7) (2020-04-19)
 
 
