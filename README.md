@@ -1,6 +1,8 @@
 spec-md-confluence
 ===================================
 
+![Node.js CI](https://github.com/michaelmccord/spec-md-confluence/workflows/Node.js%20CI/badge.svg)
+
 
 spec-md-confluence is a plugin for [spec-md](https://github.com/leebyron/spec-md) which allows spec-md to produce output in the confluence xml storage format.
 
