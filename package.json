@@ -7,6 +7,7 @@
   "private": false,
   "devDependencies": {
     "@semantic-release/changelog": "5.0.x",
+    "@semantic-release/exec": "5.0.x",
     "jest-diff": "25.3.x",
     "semantic-release": "17.0.x"
   },
@@ -61,6 +62,12 @@
         {
           "changelogTitle": "spec-md-confluence Changelog",
           "changelogFile": "CHANGELOG.md"
+        }
+      ],
+      [
+        "@semantic-release/exec",
+        {
+          "prepareCmd": "git diff --quiet CHANGELOG.md && git diff --staged --quiet CHANGELOG.md || git commit -am 'chore: update changelog' CHANGELOG.md"
         }
       ],
       [
