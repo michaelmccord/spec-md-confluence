@@ -39,3 +39,8 @@ jobs:
           CI: true
           NPM_TOKEN: "${{secrets.NPM_TOKEN}}"
           GH_TOKEN: "${{ secrets.GH_TOKEN }}"
+          GIT_AUTHOR_NAME: michaelmccord
+          GIT_COMMITER_NAME: michaelmccord
+          GIT_AUTHOR_EMAIL: 'inquiries@michaelmccord.me'
+          GIT_COMMITER_EMAIL: 'inquiries@michaelmccord.me'
+
