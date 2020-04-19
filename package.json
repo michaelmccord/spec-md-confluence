@@ -67,7 +67,7 @@
       [
         "@semantic-release/exec",
         {
-          "prepareCmd": "git diff --quiet CHANGELOG.md && git diff --staged --quiet CHANGELOG.md || git commit -m 'chore: update changelog' CHANGELOG.md"
+          "prepareCmd": "git diff --quiet CHANGELOG.md && git add CHANGELOG.md && git diff --staged --quiet CHANGELOG.md || git commit -m 'chore: update changelog' CHANGELOG.md"
         }
       ],
       [
