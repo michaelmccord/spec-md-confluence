@@ -8,6 +8,9 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
+  paths-ignore:
+    - 'package.json'
+    - 'CHANGELOG.md'
 
 jobs:
   build:
@@ -30,4 +33,4 @@ jobs:
       env:
         CI: true
         NPM_TOKEN: '${{secrets.NPM_TOKEN}}'
-        GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+        GITHUB_TOKEN: '${{ secrets.GH_TOKEN }}'
