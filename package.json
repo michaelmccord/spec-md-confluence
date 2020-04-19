@@ -73,7 +73,7 @@
       [
         "@semantic-release/github",
         {
-          "asssets": [
+          "assets": [
             {
               "path": "dist/*.tgz",
               "name": "npm package",
