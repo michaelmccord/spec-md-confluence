@@ -5,15 +5,15 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
     paths-ignore:
-      - 'package.json'
-      - 'CHANGELOG.md'
+      - "package.json"
+      - "CHANGELOG.md"
   pull_request:
-    branches: [ master ]
+    branches: [master]
     paths-ignore:
-      - 'package.json'
-      - 'CHANGELOG.md'
+      - "package.json"
+      - "CHANGELOG.md"
 
 jobs:
   build:
@@ -25,15 +25,15 @@ jobs:
         node-version: [13.x]
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: yarn install
-    - run: yarn test
-    - run: yarn release
-      env:
-        CI: true
-        NPM_TOKEN: '${{secrets.NPM_TOKEN}}'
-        GITHUB_TOKEN: '${{ secrets.GH_TOKEN }}'
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: yarn install
+      - run: yarn test
+      - run: yarn release
+        env:
+          CI: true
+          NPM_TOKEN: "${{secrets.NPM_TOKEN}}"
+          GITHUB_TOKEN: "${{ secrets.GH_TOKEN }}"
