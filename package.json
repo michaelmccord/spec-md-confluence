@@ -7,7 +7,7 @@
   "private": false,
   "devDependencies": {
     "@semantic-release/changelog": "5.0.x",
-    "@semantic-release/exec": "5.0.x",
+    "@semantic-release/git": "9.0.x",
     "jest-diff": "25.3.x",
     "semantic-release": "17.0.x"
   },
