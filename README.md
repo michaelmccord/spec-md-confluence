@@ -27,3 +27,4 @@ By contributing to spec-md-confluence, you agree that your contributions will be
 # Changelog
 
 The changelog can be found [here](CHANGELOG.md).
+
