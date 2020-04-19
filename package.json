@@ -9,7 +9,7 @@
     "@semantic-release/changelog": "5.0.x",
     "jest-diff": "25.3.x",
     "semantic-release": "17.0.x",
-    "spec-md": "https://github.com/michaelmccord/spec-md"
+    "spec-md": "https://github.com/michaelmccord/spec-md.git#d63f850c59e5566c39dab1d9def5df8d8fa2f450"
   },
   "engines": {
     "node": ">=12.13.0"
@@ -48,7 +48,7 @@
     "url": "https://github.com/michaelmccord/spec-md-confluence/issues"
   },
   "peerDependencies": {
-    "spec-md": "https://github.com/michaelmccord/spec-md"
+    "spec-md": "https://github.com/michaelmccord/spec-md.git#d63f850c59e5566c39dab1d9def5df8d8fa2f450"
   },
   "dependencies": {
     "handlebars": "4.7.x",

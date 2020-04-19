@@ -167,7 +167,7 @@
   dependencies:
     "@types/node" ">= 8"
 
-"@semantic-release/changelog@^5.0.1":
+"@semantic-release/changelog@5.0.x":
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/@semantic-release/changelog/-/changelog-5.0.1.tgz#50a84b63e5d391b7debfe021421589fa2bcdafe4"
   integrity sha512-unvqHo5jk4dvAf2nZ3aw4imrlwQ2I50eVVvq9D47Qc3R+keNqepx1vDYwkjF8guFXnOYaYcR28yrZWno1hFbiw==
@@ -2214,7 +2214,7 @@ handlebars-helper-create-frame@^0.1.0:
     create-frame "^1.0.0"
     isobject "^3.0.0"
 
-handlebars-helpers@^0.10.0:
+handlebars-helpers@0.10.x:
   version "0.10.0"
   resolved "https://registry.yarnpkg.com/handlebars-helpers/-/handlebars-helpers-0.10.0.tgz#663d49e718928eafbead1473419ed7bc24bcd45a"
   integrity sha512-QiyhQz58u/DbuV41VnfpE0nhy6YCH4vB514ajysV8SoKmP+DxU+pR+fahVyNECHj+jiwEN2VrvxD/34/yHaLUg==
@@ -2256,7 +2256,7 @@ handlebars-utils@^1.0.2, handlebars-utils@^1.0.4, handlebars-utils@^1.0.6:
     kind-of "^6.0.0"
     typeof-article "^0.1.1"
 
-handlebars@^4.0.11, handlebars@^4.4.0, handlebars@^4.7.6:
+handlebars@4.7.x, handlebars@^4.0.11, handlebars@^4.4.0:
   version "4.7.6"
   resolved "https://registry.yarnpkg.com/handlebars/-/handlebars-4.7.6.tgz#d4c05c1baf90e9945f77aa68a7a219aa4a7df74e"
   integrity sha512-1f2BACcBfiwAfStCKZNrUCgqNZkGsAT7UM3kkYtXuLo0KnaVfjKOyf7PRzB6++aK9STyT1Pd2ZCPe3EGOXleXA==
@@ -2909,7 +2909,7 @@ java-properties@^1.0.0:
   resolved "https://registry.yarnpkg.com/java-properties/-/java-properties-1.0.2.tgz#ccd1fa73907438a5b5c38982269d0e771fe78211"
   integrity sha512-qjdpeo2yKlYTH7nFdK0vbZWuTCesk4o63v5iVOlhMQPfuIZQfW/HI35SjfhA+4qpg36rnFSvUK5b1m+ckIblQQ==
 
-jest-diff@^25.3.0:
+jest-diff@25.3.x:
   version "25.3.0"
   resolved "https://registry.yarnpkg.com/jest-diff/-/jest-diff-25.3.0.tgz#0d7d6f5d6171e5dacde9e05be47b3615e147c26f"
   integrity sha512-vyvs6RPoVdiwARwY4kqFWd4PirPLm2dmmkNzKqo38uZOzJvLee87yzDjIZLmY1SjM3XR5DwsUH+cdQ12vgqi1w==
@@ -4919,7 +4919,7 @@ self-closing-tags@^1.0.1:
   resolved "https://registry.yarnpkg.com/self-closing-tags/-/self-closing-tags-1.0.1.tgz#6c5fa497994bb826b484216916371accee490a5d"
   integrity sha512-7t6hNbYMxM+VHXTgJmxwgZgLGktuXtVVD5AivWzNTdJBM4DBjnDKDzkf2SrNjihaArpeJYNjxkELBu1evI4lQA==
 
-semantic-release@^17.0.6:
+semantic-release@17.0.x:
   version "17.0.6"
   resolved "https://registry.yarnpkg.com/semantic-release/-/semantic-release-17.0.6.tgz#18e6a4f99b343f5d4d10b7fb8d9900a03040ede3"
   integrity sha512-4djSoKUiq8ShAiKEzDKkcrzFyDREFJRMsY/efr/b48dcin2g+s4TsZUTniTg3Zvk+TM9G5rNBKyXfFgVO6wJNA==
@@ -5193,9 +5193,9 @@ spdx-license-ids@^3.0.0:
   resolved "https://registry.yarnpkg.com/spdx-license-ids/-/spdx-license-ids-3.0.5.tgz#3694b5804567a458d3c8045842a6358632f62654"
   integrity sha512-J+FWzZoynJEXGphVIS+XEh3kFSjZX/1i9gFBaWQcB+/tmpe2qUsSBABpcxqxnAxFdiUFEgAX1bjYGQvIZmoz9Q==
 
-"spec-md@https://github.com/michaelmccord/spec-md":
+"spec-md@https://github.com/michaelmccord/spec-md.git#d63f850c59e5566c39dab1d9def5df8d8fa2f450":
   version "1.1.1"
-  resolved "https://github.com/michaelmccord/spec-md#884f35565f87e450f7b0ccb605256345898a093e"
+  resolved "https://github.com/michaelmccord/spec-md.git#d63f850c59e5566c39dab1d9def5df8d8fa2f450"
   dependencies:
     prismjs ">=1.16.0"
     terser "^4.1.2"
