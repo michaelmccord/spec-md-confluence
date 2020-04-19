@@ -67,7 +67,7 @@
         "@semantic-release/npm",
         {
           "npmPublish": true,
-          "tarballDir": "./pkg.tar"
+          "tarballDir": "dist"
         }
       ],
       [
@@ -75,7 +75,7 @@
         {
           "asssets": [
             {
-              "path": "pkg.tar",
+              "path": "dist/*.tgz",
               "name": "npm package",
               "label": "npm package"
             }
