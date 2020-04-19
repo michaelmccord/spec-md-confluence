@@ -1,0 +1,9 @@
+*.swp
+*~
+.DS_Store
+out
+node_modules
+npm-debug.log
+src/grammar.js
+.vscode
+/test.sh
