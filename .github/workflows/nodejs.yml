@@ -28,11 +28,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          token: '${{ secrets.GH_TOKEN }}'
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-          token: ${{ secrets.GH_TOKEN }}
       - run: yarn install
       - run: yarn test
       - run: yarn release
