@@ -65,9 +65,10 @@
         }
       ],
       [
-        "@semantic-release/exec",
+        "@semantic-release/git",
         {
-          "prepareCmd": "git diff --quiet CHANGELOG.md && git add CHANGELOG.md && git diff --staged --quiet CHANGELOG.md || git commit -m 'chore: update changelog' CHANGELOG.md"
+          "assets": ["CHANGELOG.md"],
+          "message": "chore(release):  ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
         }
       ],
       [
