@@ -6,11 +6,14 @@ name: Node.js CI
 on:
   push:
     branches: [ master ]
+    paths-ignore:
+      - 'package.json'
+      - 'CHANGELOG.md'
   pull_request:
     branches: [ master ]
-  paths-ignore:
-    - 'package.json'
-    - 'CHANGELOG.md'
+    paths-ignore:
+      - 'package.json'
+      - 'CHANGELOG.md'
 
 jobs:
   build:
