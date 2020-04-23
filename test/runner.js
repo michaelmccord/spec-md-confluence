@@ -8,13 +8,13 @@ const shouldRecord = process.env.RECORD ? Boolean(JSON.parse(process.env.RECORD.
 
 runTests([
   [path.resolve(path.dirname(require.resolve('spec-md')), '../README.md'), 'readme/output.xml'],
-  //['simple-header/input.md', 'simple-header/output.xml'],
+  ['attachments/input.md', 'attachments/output.xml','attachments/attachments/'],
 ]);
 
 async function runTests(tests) {
   try {
-    for (let [input, expectedOutput] of tests) {
-      await runTest(input, expectedOutput);
+    for (let [input, expectedOutput, attachDir] of tests) {
+      await runTest(input, expectedOutput, attachDir);
     }
   } catch (error) {
     if (error.code === 'ERR_ASSERTION') {
@@ -38,10 +38,16 @@ async function runTests(tests) {
   }
 }
 
-function runTest(input, expectedOutputPath) {
+function runTest(input, expectedOutputPath, attachDir) {
   const start = Date.now();
   process.stdout.write(`testing: ${input} ... `);
-  return specMDConfluence([], specMarkdown.parse(path.resolve(__dirname, input)))
+
+  const args = attachDir
+            ? [path.resolve(__dirname, input), path.resolve(__dirname, attachDir)]
+            : [path.resolve(__dirname, input)];
+
+  return specMDConfluence(args,
+    specMarkdown.parse(path.resolve(__dirname, input)))
     .then(function(actualOutput){
       try {
         const expectedOutput = fs.readFileSync(path.resolve(__dirname, expectedOutputPath), 'utf8');

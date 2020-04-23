@@ -51,7 +51,8 @@
   "dependencies": {
     "handlebars": "4.7.x",
     "handlebars-helpers": "0.10.x",
-    "spec-md": "https://github.com/michaelmccord/spec-md.git#d63f850c59e5566c39dab1d9def5df8d8fa2f450"
+    "spec-md": "https://github.com/michaelmccord/spec-md.git#d1b01c0f56b4b19dffb8e79f2d98393229cdb959",
+    "uri-js": "^4.2.2"
   },
   "release": {
     "plugins": [

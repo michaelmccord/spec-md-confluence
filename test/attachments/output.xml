@@ -1,0 +1,23 @@
+<div>
+  <div id="intro">
+    <p>This is an intro</p>
+    <p><ac:image><ri:attachment ri:filename="aa2db928de6950f6fa1565181a23fdd17b5149f4.svg" /></ac:image> </p>
+  </div>
+  <h1>Contents</h1>
+  <ac:structured-macro ac:name="toc">
+    <ac:parameter ac:name="printable">true</ac:parameter>
+    <ac:parameter ac:name="indent">10px</ac:parameter>
+    <ac:parameter ac:name="type">list</ac:parameter>
+    <ac:parameter ac:name="outline">false</ac:parameter>
+    <ac:parameter ac:name="style">none</ac:parameter>
+    <ac:parameter ac:name="absoluteUrl">true</ac:parameter>
+    <ac:parameter ac:name="maxLevel">6</ac:parameter>
+    <ac:parameter ac:name="exclude">Contents|</ac:parameter>
+  </ac:structured-macro>
+  <div>
+    <h1>§Index</h1>
+    <ol>
+    </ol>
+  </div>
+  
+</div>

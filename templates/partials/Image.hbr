@@ -1,1 +1,5 @@
+{{#if (isUrl url)~}}
 <img src="{{{encodeURI url}}}" {{#if alt}}alt="{{escape alt}}"{{/if}} />
+{{~else~}}
+<ac:image><ri:attachment ri:filename="{{sha1Hash url}}{{getFileExt url}}" /></ac:image>
+{{~/if~}}
