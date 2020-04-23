@@ -1,5 +1,17 @@
 spec-md-confluence Changelog
 
+# [2.0.0](https://github.com/michaelmccord/spec-md-confluence/compare/v1.0.10...v2.0.0) (2020-04-23)
+
+
+### Features
+
+* adding attachment support ([7390b10](https://github.com/michaelmccord/spec-md-confluence/commit/7390b10bcada9ad080e8e1d0079d8e0fc2b8e817))
+
+
+### BREAKING CHANGES
+
+* now requires that first argument is path to markdown file
+
 ## [1.0.10](https://github.com/michaelmccord/spec-md-confluence/compare/v1.0.9...v1.0.10) (2020-04-19)
 
 
