@@ -1,5 +1,12 @@
 spec-md-confluence Changelog
 
+## [2.0.2](https://github.com/michaelmccord/spec-md-confluence/compare/v2.0.1...v2.0.2) (2020-04-23)
+
+
+### Bug Fixes
+
+* update to latest version of experimental spec-md ([e0d9dd6](https://github.com/michaelmccord/spec-md-confluence/commit/e0d9dd605df73636920c0086b460a1d3ee39cb1f))
+
 ## [2.0.1](https://github.com/michaelmccord/spec-md-confluence/compare/v2.0.0...v2.0.1) (2020-04-23)
 
 
