@@ -5207,9 +5207,9 @@ spdx-license-ids@^3.0.0:
   resolved "https://registry.yarnpkg.com/spdx-license-ids/-/spdx-license-ids-3.0.5.tgz#3694b5804567a458d3c8045842a6358632f62654"
   integrity sha512-J+FWzZoynJEXGphVIS+XEh3kFSjZX/1i9gFBaWQcB+/tmpe2qUsSBABpcxqxnAxFdiUFEgAX1bjYGQvIZmoz9Q==
 
-"spec-md@https://github.com/michaelmccord/spec-md.git#d1b01c0f56b4b19dffb8e79f2d98393229cdb959":
+"spec-md@https://github.com/michaelmccord/spec-md.git#fad87882a2d7ab2cbefe6ebd8fd5cc47cfe14cc0":
   version "1.1.1"
-  resolved "https://github.com/michaelmccord/spec-md.git#d1b01c0f56b4b19dffb8e79f2d98393229cdb959"
+  resolved "https://github.com/michaelmccord/spec-md.git#fad87882a2d7ab2cbefe6ebd8fd5cc47cfe14cc0"
   dependencies:
     prismjs ">=1.16.0"
     terser "^4.1.2"

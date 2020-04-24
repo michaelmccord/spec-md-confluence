@@ -31,8 +31,10 @@ function loadMainTemplate() {
 
 function writeAttachments(ast, dir, attachDir) {
 
-  if(!fs.existsSync(attachDir))
-    fs.mkdirSync(attachDir);
+  if(fs.existsSync(attachDir))
+    fs.rmdirSync(attachDir, {recursive: true});
+
+  fs.mkdirSync(attachDir);
 
   visit(ast, {
     leave: function(node){
@@ -58,7 +60,7 @@ function writeAttachments(ast, dir, attachDir) {
           if(url[0] === '#')
             return undefined;
 
-          const pathToFile = path.resolve(dir, url);
+          const pathToFile = path.resolve(path.resolve(dir,node.subdir), url);
           const fileExists = fs.existsSync(pathToFile);
           if(!fileExists)
             throw new Error(`While processing attachments, found that file does not exist at ${pathToFile}`);
@@ -68,7 +70,6 @@ function writeAttachments(ast, dir, attachDir) {
           const newUrlName = `${fileHash}${fileExt ? fileExt : ''}`;
 
           fs.copyFileSync(pathToFile, path.resolve(attachDir, newUrlName));
-          node.url = newUrlName;
 
           return undefined;
       }
@@ -82,8 +83,6 @@ module.exports = function(args, parsePromise, _options) {
                   : null;
 
   const markdownFile = args[0];
-  console.info('running...');
-  console.log(markdownFile);
 
   const dir = path.dirname(path.resolve(process.cwd(), markdownFile));
 
