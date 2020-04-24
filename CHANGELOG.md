@@ -1,5 +1,12 @@
 spec-md-confluence Changelog
 
+## [2.0.3](https://github.com/michaelmccord/spec-md-confluence/compare/v2.0.2...v2.0.3) (2020-04-24)
+
+
+### Bug Fixes
+
+* do not hash image urls twice ([b977512](https://github.com/michaelmccord/spec-md-confluence/commit/b97751206c74ad4797197ba9ae4dccb031a841c5))
+
 ## [2.0.2](https://github.com/michaelmccord/spec-md-confluence/compare/v2.0.1...v2.0.2) (2020-04-23)
 
 
